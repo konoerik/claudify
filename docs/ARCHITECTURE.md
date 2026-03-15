@@ -28,6 +28,14 @@
 **Consequences:** guard-naming.sh hook blocks creation of disallowed filenames. ## Done is ephemeral — archived by stop hook.
 
 
+### ADR-3: Installer script generated from blueprint, not fetched
+**Date:** 2026-03-14
+**Context:** Claude's WebFetch tool summarizes content rather than returning raw bytes, making per-file fetches unreliable. Generating N individual curl tool calls is also slow and noisy.
+**Decision:** claudify.md embeds a shell script template. Claude parses the blueprint YAML, fills in the template, writes `.claudify-install.sh`, runs it, then deletes it. Only the blueprint YAML is fetched via curl; all file installs happen inside the generated script.
+**Alternatives considered:** Fetching a static installer script from the repo (requires bash YAML parsing); per-file WebFetch calls (summarizes content); per-file curl tool calls (N round-trips, noisy).
+**Consequences:** Future blueprints work automatically — the template handles any manifest. If new setup field types are added to blueprints, the template in claudify.md must be updated to cover them.
+
+
 ## Detail
 <!-- Directory layout, extension points, etc. Load on demand. -->
 

@@ -30,26 +30,42 @@ Parse it. Extract:
 - `setup[]` — `mkdir` and `gitignore` steps
 - `next_steps[]` — what to tell the user at the end
 
-### 2. Install files
+### 2. Generate and run the installer script
 
-For each entry in `files[]`:
-1. Check if `dest` already exists in the current project
-2. If it exists: **skip it** — note the skip, never overwrite
-3. If it does not exist:
-   - Create any missing parent directories
-   - Use `Bash` with `curl -fsSL` to fetch the file content from `{SOURCE}/{src}`
-   - Write it to `dest`
-4. If `executable: true`: run `chmod +x {dest}`
+Using the blueprint data and the template below, write a script to `.claudify-install.sh`,
+run it with `Bash`, then delete it.
 
-### 3. Run setup steps
+Fill in one block per `files[]` entry and one line per `setup[]` entry.
+Collect all unique parent directories (from `dest` paths and `setup[].mkdir` entries)
+and emit them as `mkdir -p` calls at the top.
 
-For each entry in `setup[]`:
-- `mkdir` → create the directory if it does not exist
-- `gitignore` → append the entry to `.gitignore` if not already present
+**Template:**
 
-### 4. Report
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+SOURCE="https://raw.githubusercontent.com/konoerik/claudify/main"
 
-Print a clean summary:
+# directories
+mkdir -p "DIR_1"
+mkdir -p "DIR_2"
+
+# files
+if [ -f "DEST" ]; then
+  echo "skipped: DEST"
+else
+  curl -fsSL "$SOURCE/SRC" -o "DEST"
+  # if executable: true, add: chmod +x "DEST"
+  echo "installed: DEST"
+fi
+
+# gitignore (one line per setup[].gitignore entry)
+grep -qxF "ENTRY" .gitignore 2>/dev/null || echo "ENTRY" >> .gitignore
+```
+
+### 3. Report
+
+Parse the script output. Print a clean summary:
 - **Installed:** each file written
 - **Skipped:** each file that already existed (no action taken)
 
