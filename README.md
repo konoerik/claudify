@@ -55,6 +55,8 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 | Blueprint | Use for |
 |---|---|
 | `generic` | Any project |
+| `python-flask` | Flask web applications |
+| `python-lib` | Python libraries |
 | `python-tui` | Python TUI projects using [Textual](https://textual.textualize.io) |
 
 ---

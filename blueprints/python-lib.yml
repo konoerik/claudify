@@ -1,0 +1,68 @@
+name: Python Library
+description: Claude Code setup for Python libraries
+
+# Rules:
+#   - All files are skipped if they already exist (never overwrites)
+#   - executable: true  → chmod +x after creating
+#   - setup steps run after all files are installed
+
+files:
+
+  # --- Project documents ---
+  # Uses library-specific CLAUDE.md and ARCHITECTURE.md;
+  # shares generic CONTEXT.md, PLAN.md, ROADMAP.md
+
+  - src: files/docs/CLAUDE-python-lib.md
+    dest: CLAUDE.md
+
+  - src: files/docs/CONTEXT.md
+    dest: CONTEXT.md
+
+  - src: files/docs/PLAN.md
+    dest: PLAN.md
+
+  - src: files/docs/ARCHITECTURE-python-lib.md
+    dest: ARCHITECTURE.md
+
+  - src: files/docs/ROADMAP.md
+    dest: ROADMAP.md
+
+  # --- Hooks (shared with generic) ---
+
+  - src: files/hooks/session-wrap.sh
+    dest: .claude/hooks/stop/session-wrap.sh
+    executable: true
+
+  - src: files/hooks/guard-naming.sh
+    dest: .claude/hooks/pre-tool-use/guard-naming.sh
+    executable: true
+
+  # --- Commands (shared with generic) ---
+
+  - src: files/commands/plan.md
+    dest: .claude/commands/plan.md
+
+  - src: files/commands/wrap.md
+    dest: .claude/commands/wrap.md
+
+  - src: files/commands/decide.md
+    dest: .claude/commands/decide.md
+
+  - src: files/commands/arch.md
+    dest: .claude/commands/arch.md
+
+  - src: files/commands/ship.md
+    dest: .claude/commands/ship.md
+
+  - src: files/commands/standup.md
+    dest: .claude/commands/standup.md
+
+setup:
+  - mkdir: .claude/archive
+  - gitignore: .claude/archive/
+
+next_steps:
+  - Fill in CLAUDE.md — library purpose, supported Python versions, package manager
+  - Fill in ARCHITECTURE.md ## Quick Reference — entry point, key paths, constraints
+  - Fill in ARCHITECTURE.md ## Detail — module structure, public API, versioning policy
+  - Fill in CONTEXT.md — current focus and next action

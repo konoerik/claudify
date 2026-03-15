@@ -17,6 +17,8 @@ If no blueprint name is given, list the available blueprints below and ask which
 | Name | Use for |
 |---|---|
 | `generic` | Any project |
+| `python-flask` | Flask web applications |
+| `python-lib` | Python libraries |
 | `python-tui` | Python TUI projects using Textual |
 
 ---
