@@ -19,7 +19,8 @@ claudify fixes this by giving every project the same starting point.
 Install the `/claudify` command globally so it's available in every project:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/konoerik/claudify/main/claudify.md \
+mkdir -p ~/.claude/commands && \
+  curl -fsSL https://raw.githubusercontent.com/konoerik/claudify/main/claudify.md \
   -o ~/.claude/commands/claudify.md
 ```
 
