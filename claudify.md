@@ -54,3 +54,7 @@ Print a clean summary:
 - **Skipped:** each file that already existed (no action taken)
 
 Then print each item in `next_steps[]` as a numbered list under the heading **Next steps**.
+
+Finally, print this note:
+
+> **Note:** Restart Claude Code now so it discovers the newly installed commands.
