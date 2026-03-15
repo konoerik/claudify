@@ -50,6 +50,6 @@ Never auto-load:
 
 ## Behavior Rules
 - Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
-- When making an architectural decision (API shape, dependency policy, compatibility boundary), record it with `/decide`
+- When making an architectural decision (API shape, dependency policy, compatibility boundary), record it with `/log`
 - Never add a runtime dependency without discussion — keep the dependency footprint small
 - Keep `PLAN.md ## Active` short — triage if it exceeds 10 items

@@ -54,6 +54,6 @@ Never auto-load:
 
 ## Behavior Rules
 - Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
-- When making an architectural decision (new screen, widget pattern, state model), record it with `/decide`
+- When making an architectural decision (new screen, widget pattern, state model), record it with `/log`
 - Prefer composing existing Textual built-ins over custom implementations
 - Keep `PLAN.md ## Active` short — triage if it exceeds 10 items

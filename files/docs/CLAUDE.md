@@ -38,5 +38,5 @@ Never auto-load:
 ## Behavior Rules
 - Prefer editing existing files over creating new ones
 - Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md`, or similar — use `PLAN.md`
-- When making an architectural decision, record it with `/decide` before ending the session
+- When making an architectural decision, record it with `/log` before ending the session
 - Keep `PLAN.md ## Active` short — if it exceeds 10 items, triage before adding more

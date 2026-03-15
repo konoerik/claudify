@@ -51,6 +51,6 @@ Never auto-load:
 
 ## Behavior Rules
 - Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
-- When making an architectural decision (new blueprint, auth strategy, data model), record it with `/decide`
+- When making an architectural decision (new blueprint, auth strategy, data model), record it with `/log`
 - Use the app factory pattern — never create the app at module level
 - Keep `PLAN.md ## Active` short — triage if it exceeds 10 items

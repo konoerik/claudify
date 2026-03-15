@@ -39,5 +39,5 @@ Never auto-load:
 ## Behavior Rules
 - Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
 - When adding a new hook or command, add it to `files/` and reference it in all relevant blueprints
-- When making a design decision about kit conventions, record it with `/decide`
+- When making a design decision about kit conventions, record it with `/log`
 - Keep files in `files/docs/` generic — project-specific content goes in named variants

@@ -81,12 +81,10 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 
 | Command | What it does |
 |---|---|
-| `/plan` | Surface current focus and active tasks, ask what to work on |
-| `/wrap` | End-of-session: rewrite `CONTEXT.md`, move completed tasks to Done |
-| `/decide` | Record an architectural decision (ADR) in `ARCHITECTURE.md` |
-| `/arch` | Load full architecture context, review ADRs |
-| `/ship` | Pre-PR checklist: tests, docs, no stray TODOs |
-| `/standup` | Yesterday (git log) + today (PLAN.md) digest |
+| `/continue` | Surface current focus and active tasks, ask what to work on |
+| `/save` | End-of-session: rewrite `CONTEXT.md`, move completed tasks to Done |
+| `/log` | Record an architectural decision (ADR) in `ARCHITECTURE.md` |
+| `/prep` | Pre-commit checklist: tests, docs, no stray TODOs |
 
 ### Hooks installed into your project
 

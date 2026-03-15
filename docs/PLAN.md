@@ -3,7 +3,8 @@
 ## Active
 
 ## Backlog
-- [ ] Revisit command names (e.g. /plan conflicts with Claude's built-in plan mode)
+- [x] Revisit command names (e.g. /plan conflicts with Claude's built-in plan mode)
+- [ ] Non-coding blueprint: identify 2-3 concrete use cases (e.g. writing a book, research project, design project) to find the right abstraction — name, ARCHITECTURE.md reframing, trimmed command set
 - [ ] Audit + migrate feature: structural drift detection (audit.sh) and content migration (/migrate command) for existing projects — removed for now due to convoluted UX, revisit once core flow is stable
 - [ ] More blueprints: node-typescript, python, go
 - [ ] post-tool-use hook: auto-lint on edit

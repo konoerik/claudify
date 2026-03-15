@@ -39,23 +39,18 @@ files:
 
   # --- Commands (shared with generic) ---
 
-  - src: files/commands/plan.md
-    dest: .claude/commands/plan.md
+  - src: files/commands/continue.md
+    dest: .claude/commands/continue.md
 
-  - src: files/commands/wrap.md
-    dest: .claude/commands/wrap.md
+  - src: files/commands/save.md
+    dest: .claude/commands/save.md
 
-  - src: files/commands/decide.md
-    dest: .claude/commands/decide.md
+  - src: files/commands/log.md
+    dest: .claude/commands/log.md
 
-  - src: files/commands/arch.md
-    dest: .claude/commands/arch.md
+  - src: files/commands/prep.md
+    dest: .claude/commands/prep.md
 
-  - src: files/commands/ship.md
-    dest: .claude/commands/ship.md
-
-  - src: files/commands/standup.md
-    dest: .claude/commands/standup.md
 
 setup:
   - mkdir: .claude/archive
