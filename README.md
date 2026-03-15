@@ -90,19 +90,19 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 
 | Hook | Trigger | What it does |
 |---|---|---|
-| `stop/session-wrap.sh` | Session end | Archives `## Done` tasks; warns if `/wrap` wasn't run |
+| `stop/session-wrap.sh` | Session end | Archives `## Done` tasks; warns if `/save` wasn't run |
 | `pre-tool-use/guard-naming.sh` | Before file writes | Blocks `BACKLOG.md`, `TASKS.md`, `TODO.md` etc. |
 
 ### Recommended workflow
 
 ```
 Start of session  →  Claude reads CONTEXT.md automatically
-                      Run /plan to orient
+                      Run /continue to orient
 
-During session    →  Run /decide when making architectural decisions
+During session    →  Run /log when making architectural decisions
                       Keep PLAN.md ## Active updated as you go
 
-End of session    →  Run /wrap
+End of session    →  Run /save
                       Claude rewrites CONTEXT.md and moves done tasks
                       Stop hook archives and checks everything is clean
 ```
@@ -116,11 +116,8 @@ claudify/
 ├── claudify.md           ← the global /claudify command (install this to ~/.claude/commands/)
 ├── docs/               ← this repo's own CONTEXT, PLAN, ARCHITECTURE, ROADMAP
 ├── blueprints/         ← YAML manifests declaring what each blueprint installs
-│   ├── generic.yml
-│   └── python-tui.yml
 ├── files/              ← source files referenced by blueprints
 │   ├── docs/           ← document templates (shared + per-blueprint variants)
 │   ├── hooks/          ← hook scripts
 │   └── commands/       ← slash command prompts
-└── audit.sh            ← optional shell tool: checks a project for convention drift
 ```
