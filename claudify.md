@@ -22,7 +22,7 @@ If no argument is given, list the available blueprints below and ask which to ap
 
 ### 1. Fetch the blueprint
 
-Fetch the YAML file from:
+Use `Bash` with `curl -fsSL` to fetch the YAML file from:
 `{SOURCE}/blueprints/{name}.yml`
 
 Parse it. Extract:
@@ -37,7 +37,7 @@ For each entry in `files[]`:
 2. If it exists: **skip it** — note the skip, never overwrite
 3. If it does not exist:
    - Create any missing parent directories
-   - Fetch the file content from `{SOURCE}/{src}`
+   - Use `Bash` with `curl -fsSL` to fetch the file content from `{SOURCE}/{src}`
    - Write it to `dest`
 4. If `executable: true`: run `chmod +x {dest}`
 
