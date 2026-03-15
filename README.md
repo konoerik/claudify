@@ -44,6 +44,12 @@ To skip the prompt, name the blueprint directly:
 /claudify python-tui
 ```
 
+To install from a local clone instead of GitHub (useful when developing blueprints):
+
+```
+/claudify generic /path/to/claudify
+```
+
 ### Available blueprints
 
 | Blueprint | Use for |
