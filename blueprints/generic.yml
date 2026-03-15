@@ -1,0 +1,74 @@
+name: Generic
+description: Claude Code setup for any language or stack
+
+# To apply this blueprint, tell Claude Code:
+#   "Read and apply claudify/blueprints/generic.yml to this project."
+#
+# Claude will read each src file relative to the claudify root, then install it
+# at dest relative to the target project root.
+#
+# Rules:
+#   - All files are skipped if they already exist (never overwrites)
+#   - executable: true  → chmod +x after creating
+#   - setup steps run after all files are installed
+
+files:
+
+  # --- Project documents ---
+
+  - src: files/docs/CLAUDE.md
+    dest: CLAUDE.md
+
+  - src: files/docs/CONTEXT.md
+    dest: CONTEXT.md
+
+  - src: files/docs/PLAN.md
+    dest: PLAN.md
+
+  - src: files/docs/ARCHITECTURE.md
+    dest: ARCHITECTURE.md
+
+  - src: files/docs/ROADMAP.md
+    dest: ROADMAP.md
+
+  # --- Hooks ---
+
+  - src: files/hooks/session-wrap.sh
+    dest: .claude/hooks/stop/session-wrap.sh
+    executable: true
+
+  - src: files/hooks/guard-naming.sh
+    dest: .claude/hooks/pre-tool-use/guard-naming.sh
+    executable: true
+
+  # --- Commands ---
+
+  - src: files/commands/plan.md
+    dest: .claude/commands/plan.md
+
+  - src: files/commands/wrap.md
+    dest: .claude/commands/wrap.md
+
+  - src: files/commands/decide.md
+    dest: .claude/commands/decide.md
+
+  - src: files/commands/arch.md
+    dest: .claude/commands/arch.md
+
+  - src: files/commands/ship.md
+    dest: .claude/commands/ship.md
+
+  - src: files/commands/standup.md
+    dest: .claude/commands/standup.md
+
+  - src: files/commands/migrate.md
+    dest: .claude/commands/migrate.md
+
+setup:
+  - mkdir: .claude/archive
+  - gitignore: .claude/archive/
+
+next_steps:
+  - Fill in CLAUDE.md — project overview, stack, conventions
+  - Fill in ARCHITECTURE.md ## Quick Reference — stack, entry points, key constraints
+  - Fill in CONTEXT.md — current focus and next action
