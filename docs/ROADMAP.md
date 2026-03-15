@@ -8,7 +8,7 @@ A single `/claudify` slash command — installed once globally — sets up any p
 ## Phases
 
 ### Phase 1: Core (current)
-`claudify.md` global command, `generic` and `python-tui` blueprints, audit.sh. Works for any project.
+`claudify.md` global command, `generic` and `python-tui` blueprints. Works for any project.
 Out of scope: language-specific variants beyond python-tui, GUI, package distribution.
 
 ### Phase 2: More blueprints

@@ -60,9 +60,6 @@ files:
   - src: files/commands/standup.md
     dest: .claude/commands/standup.md
 
-  - src: files/commands/migrate.md
-    dest: .claude/commands/migrate.md
-
 setup:
   - mkdir: .claude/archive
   - gitignore: .claude/archive/

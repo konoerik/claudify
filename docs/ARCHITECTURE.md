@@ -5,7 +5,7 @@
      Stack, key constraints, and the most important patterns. -->
 
 **Stack:** Bash, Markdown, YAML — no runtime dependencies
-**Entry points:** `blueprints/*.yml` (applied by Claude), `audit.sh` (shell, standalone)
+**Entry points:** `blueprints/*.yml` (applied by Claude via `/claudify`)
 **Key constraints:** Hooks must be idempotent and handle missing files without hard exits; files must stay generic
 **Patterns:** Blueprint declares `src` (in `files/`) → `dest` (in target project); Claude executes the install
 
@@ -47,5 +47,5 @@ claudify/
 │   ├── docs/           # Document templates (CLAUDE.md, CONTEXT.md, etc.)
 │   ├── hooks/          # Hook scripts (flat; dest path sets the event type)
 │   └── commands/       # Slash command prompt files
-└── audit.sh            # Standalone shell tool — checks a project for drift
+└── claudify.md         # The global /claudify command
 ```

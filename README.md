@@ -85,7 +85,6 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 | `/arch` | Load full architecture context, review ADRs |
 | `/ship` | Pre-PR checklist: tests, docs, no stray TODOs |
 | `/standup` | Yesterday (git log) + today (PLAN.md) digest |
-| `/migrate` | Migrate an existing project to claudify conventions, step by step |
 
 ### Hooks installed into your project
 
@@ -107,18 +106,6 @@ End of session    →  Run /wrap
                       Claude rewrites CONTEXT.md and moves done tasks
                       Stop hook archives and checks everything is clean
 ```
-
----
-
-## For existing projects
-
-If your project already has some Claude Code setup, check for drift first:
-
-```bash
-bash /path/to/claudify/audit.sh /path/to/your-project
-```
-
-Then run `/migrate` inside Claude Code for content-level changes — merging a `BACKLOG.md` into `PLAN.md`, bootstrapping `CONTEXT.md` from git history, etc.
 
 ---
 

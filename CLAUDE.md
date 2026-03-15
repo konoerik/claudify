@@ -16,10 +16,7 @@ Bash, Markdown, YAML. No build step, no dependencies.
 ## Development Workflow
 ```bash
 # Lint shell scripts
-shellcheck files/hooks/*.sh audit.sh
-
-# Audit this repo against its own conventions
-bash audit.sh .
+shellcheck files/hooks/*.sh
 ```
 
 ## Context Loading
