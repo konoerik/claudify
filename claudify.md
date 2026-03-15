@@ -7,8 +7,11 @@ SOURCE=https://raw.githubusercontent.com/konoerik/claudify/main
 
 ## Instructions
 
-The user may pass a blueprint name as an argument (e.g. `/claudify python-tui`).
-If no argument is given, list the available blueprints below and ask which to apply.
+The user may pass arguments:
+- `/claudify {name}` — apply a named blueprint from GitHub
+- `/claudify {name} {path}` — apply a named blueprint from a local clone at `{path}`
+
+If no blueprint name is given, list the available blueprints below and ask which to apply.
 
 ### Available blueprints
 | Name | Use for |
@@ -22,12 +25,14 @@ If no argument is given, list the available blueprints below and ask which to ap
 
 ### 1. Greet the user
 
-Tell the user which blueprint you are about to apply and that you will fetch it, install all files, and report what changed.
+Tell the user which blueprint you are about to apply and where you are installing from (GitHub or the local path). Say you will install all files and report what changed.
 
-### 2. Fetch the blueprint
+### 2. Resolve source and fetch the blueprint
 
-Use `Bash` with `curl -fsSL` to fetch the YAML file from:
-`{SOURCE}/blueprints/{name}.yml`
+If a local path was given, set `SOURCE` to that path. Otherwise use the default `SOURCE` from Configuration above.
+
+- **Remote** (`SOURCE` is a URL): use `Bash` with `curl -fsSL` to fetch `{SOURCE}/blueprints/{name}.yml`
+- **Local** (`SOURCE` is a path): use `Bash` with `cat` to read `{SOURCE}/blueprints/{name}.yml`
 
 Parse it. Extract:
 - `files[]` — each entry has `src`, `dest`, and optional `executable: true`
@@ -43,12 +48,14 @@ Fill in one block per `files[]` entry and one line per `setup[]` entry.
 Collect all unique parent directories (from `dest` paths and `setup[].mkdir` entries)
 and emit them as `mkdir -p` calls at the top.
 
+Use `curl -fsSL "$SOURCE/SRC" -o "DEST"` for remote sources and `cp "$SOURCE/SRC" "DEST"` for local sources.
+
 **Template:**
 
 ```bash
 #!/usr/bin/env bash
 set -euo pipefail
-SOURCE="https://raw.githubusercontent.com/konoerik/claudify/main"
+SOURCE="..."  # resolved SOURCE — URL or absolute path
 
 # directories
 mkdir -p "DIR_1"
@@ -58,7 +65,7 @@ mkdir -p "DIR_2"
 if [ -f "DEST" ]; then
   echo "skipped: DEST"
 else
-  curl -fsSL "$SOURCE/SRC" -o "DEST"
+  curl -fsSL "$SOURCE/SRC" -o "DEST"  # remote; or: cp "$SOURCE/SRC" "DEST"  # local
   # if executable: true, add: chmod +x "DEST"
   echo "installed: DEST"
 fi

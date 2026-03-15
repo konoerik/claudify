@@ -3,6 +3,7 @@
 ## Active
 
 ## Backlog
+- [ ] Revisit command names (e.g. /plan conflicts with Claude's built-in plan mode)
 - [ ] More blueprints: node-typescript, python, go
 - [ ] post-tool-use hook: auto-lint on edit
 
