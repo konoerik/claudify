@@ -20,7 +20,11 @@ If no argument is given, list the available blueprints below and ask which to ap
 
 ## Steps
 
-### 1. Fetch the blueprint
+### 1. Greet the user
+
+Tell the user which blueprint you are about to apply and that you will fetch it, install all files, and report what changed.
+
+### 2. Fetch the blueprint
 
 Use `Bash` with `curl -fsSL` to fetch the YAML file from:
 `{SOURCE}/blueprints/{name}.yml`
@@ -30,7 +34,7 @@ Parse it. Extract:
 - `setup[]` — `mkdir` and `gitignore` steps
 - `next_steps[]` — what to tell the user at the end
 
-### 2. Generate and run the installer script
+### 3. Generate and run the installer script
 
 Using the blueprint data and the template below, write a script to `.claudify-install.sh`,
 run it with `Bash`, then delete it.
@@ -63,7 +67,7 @@ fi
 grep -qxF "ENTRY" .gitignore 2>/dev/null || echo "ENTRY" >> .gitignore
 ```
 
-### 3. Report
+### 4. Report
 
 Parse the script output. Print a clean summary:
 - **Installed:** each file written
