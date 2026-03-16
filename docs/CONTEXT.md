@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** Repo is live on GitHub; blueprints install docs into `docs/` in target projects
-**Last session:** Published repo, added python-flask/python-lib blueprints, renamed commands to gaming verbs (continue/save/log/prep), moved blueprint doc dests to docs/
+**Current focus:** Repo is live and stable; blueprints install docs into `docs/` in target projects
+**Last session:** Added /release command scoped to python-lib; all blueprint doc paths moved to docs/
 **Blocking:** Nothing
-**Next action:** Test updated blueprints on a real project with the new docs/ layout
+**Next action:** Test blueprints on a real project to validate docs/ layout and new command set
 <!-- wrapped: 2026-03-16 -->

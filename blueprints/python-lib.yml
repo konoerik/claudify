@@ -51,6 +51,10 @@ files:
   - src: files/commands/prep.md
     dest: .claude/commands/prep.md
 
+  # --- Library-specific commands ---
+
+  - src: files/commands/release.md
+    dest: .claude/commands/release.md
 
 setup:
   - mkdir: .claude/archive
