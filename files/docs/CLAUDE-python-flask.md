@@ -35,16 +35,16 @@ ruff check .
 ## Context Loading
 
 Read on every session:
-- `CONTEXT.md` — current focus, last decisions, next action
+- `docs/CONTEXT.md` — current focus, last decisions, next action
 
 Read when the user mentions tasks, features, bugs, or current work:
-- `PLAN.md` — `## Active` section only
+- `docs/PLAN.md` — `## Active` section only
 
 Read when touching app structure, routes, models, or architecture:
-- `ARCHITECTURE.md` — `## Quick Reference` first; full file only if needed
+- `docs/ARCHITECTURE.md` — `## Quick Reference` first; full file only if needed
 
 Load only when explicitly asked about goals or priorities:
-- `ROADMAP.md`
+- `docs/ROADMAP.md`
 
 Never auto-load:
 - `.claude/archive/`

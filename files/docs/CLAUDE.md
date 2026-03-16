@@ -21,16 +21,16 @@
 ## Context Loading
 
 Read on every session:
-- `CONTEXT.md` — current focus, last decisions, next action
+- `docs/CONTEXT.md` — current focus, last decisions, next action
 
 Read when the user mentions tasks, features, bugs, or current work:
-- `PLAN.md` — `## Active` section only
+- `docs/PLAN.md` — `## Active` section only
 
 Read when touching code structure, patterns, or making architectural decisions:
-- `ARCHITECTURE.md` — `## Quick Reference` section first; load full file only if needed
+- `docs/ARCHITECTURE.md` — `## Quick Reference` section first; load full file only if needed
 
 Load only when explicitly asked about goals or priorities:
-- `ROADMAP.md`
+- `docs/ROADMAP.md`
 
 Never auto-load:
 - `.claude/archive/`

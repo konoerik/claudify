@@ -16,16 +16,16 @@ files:
     dest: CLAUDE.md
 
   - src: files/docs/CONTEXT.md
-    dest: CONTEXT.md
+    dest: docs/CONTEXT.md
 
   - src: files/docs/PLAN.md
-    dest: PLAN.md
+    dest: docs/PLAN.md
 
   - src: files/docs/ARCHITECTURE-python-flask.md
-    dest: ARCHITECTURE.md
+    dest: docs/ARCHITECTURE.md
 
   - src: files/docs/ROADMAP.md
-    dest: ROADMAP.md
+    dest: docs/ROADMAP.md
 
   # --- Hooks (shared with generic) ---
 
