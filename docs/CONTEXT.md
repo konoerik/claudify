@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** Repo is live and stable; blueprints install docs into `docs/` in target projects
-**Last session:** Added /release command scoped to python-lib; all blueprint doc paths moved to docs/
+**Current focus:** Repo is stable; refining conventions and documenting limitations
+**Last session:** Added README limitations section, ROADMAP ideas for scaling and non-coding blueprints, /release command for python-lib
 **Blocking:** Nothing
 **Next action:** Test blueprints on a real project to validate docs/ layout and new command set
-<!-- wrapped: 2026-03-16 -->
+<!-- wrapped: 2026-03-18 -->

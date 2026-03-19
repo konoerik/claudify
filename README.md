@@ -109,6 +109,17 @@ End of session    →  Run /save
 
 ---
 
+## Limitations
+
+claudify is designed for individual developers or small teams working with Claude Code. It is not suitable for:
+
+- **Large task volumes** — `PLAN.md` is a flat file; it gets unwieldy past ~50 items. Use a proper issue tracker (GitHub Issues, Linear) for high-volume projects
+- **Team workflows** — `CONTEXT.md` and `PLAN.md` have a single shared state; there is no concept of multiple contributors or assignments
+- **Windows (native)** — hooks require bash and standard Unix tools; use WSL if on Windows
+- **Long-lived architecture docs** — `ARCHITECTURE.md` grows with every ADR; loading it fully becomes expensive over time. Keep `## Quick Reference` concise
+
+---
+
 ## Repo structure
 
 ```
