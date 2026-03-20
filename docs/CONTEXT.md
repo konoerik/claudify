@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** Repo is stable; refining conventions and documenting limitations
-**Last session:** Added README limitations section, ROADMAP ideas for scaling and non-coding blueprints, /release command for python-lib
+**Current focus:** Organic validation — using claudify in real projects, waiting for others to discover it
+**Last session:** Added /pulse command to all blueprints; recorded as ADR-4; ran pulse on this project and confirmed on track
 **Blocking:** Nothing
-**Next action:** Test blueprints on a real project to validate docs/ layout and new command set
-<!-- wrapped: 2026-03-18 -->
+**Next action:** Use claudify on a real project to validate docs/ layout and command set in practice
+<!-- wrapped: 2026-03-20 -->

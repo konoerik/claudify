@@ -36,6 +36,13 @@
 **Consequences:** Future blueprints work automatically — the template handles any manifest. If new setup field types are added to blueprints, the template in claudify.md must be updated to cover them.
 
 
+### ADR-4: /pulse as a default command in all blueprints
+**Date:** 2026-03-20
+**Context:** Projects drift unintentionally — sessions accumulate tangential work that's never reconciled with original intent. Without a prompt to step back, drift goes unnoticed until it's significant.
+**Decision:** Add `/pulse` as a standard command installed by every blueprint. It reads project context, presents a factual summary of intended vs. actual direction, and asks three questions (right problem / off track / avoiding something). Intentional pivots are recorded as ADRs; unintentional drift is corrected in PLAN.md and CONTEXT.md.
+**Alternatives considered:** Folding the check into `/save` (too buried — users skip it when wrapping up); leaving it to the user to notice drift organically (the whole problem).
+**Consequences:** Every claudified project gets a lightweight self-reflection tool. The tone is explicitly curious, not corrective, to keep it feel like a gut-check rather than an audit.
+
 ## Detail
 <!-- Directory layout, extension points, etc. Load on demand. -->
 

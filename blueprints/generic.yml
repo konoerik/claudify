@@ -55,6 +55,9 @@ files:
   - src: files/commands/prep.md
     dest: .claude/commands/prep.md
 
+  - src: files/commands/pulse.md
+    dest: .claude/commands/pulse.md
+
 
 setup:
   - mkdir: .claude/archive
