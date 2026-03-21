@@ -85,6 +85,7 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 | `/save` | End-of-session: rewrite `CONTEXT.md`, move completed tasks to Done |
 | `/log` | Record an architectural decision (ADR) in `ARCHITECTURE.md` |
 | `/prep` | Pre-commit checklist: tests, docs, no stray TODOs |
+| `/pulse` | Direction gut-check: are we still solving the right problem? |
 
 ### Hooks installed into your project
 
@@ -101,6 +102,7 @@ Start of session  →  Claude reads CONTEXT.md automatically
 
 During session    →  Run /log when making architectural decisions
                       Keep PLAN.md ## Active updated as you go
+                      Run /pulse when something feels off (or just to check)
 
 End of session    →  Run /save
                       Claude rewrites CONTEXT.md and moves done tasks
