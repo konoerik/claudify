@@ -2,7 +2,7 @@
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
 **Current focus:** Validating the new init/update flow on a real project
-**Last session:** Implemented `/claudify init`/`update` subcommands; split CLAUDE.md into user-owned and kit-owned (`.claude/claudify.md`); recorded as ADR-5
+**Last session:** Added tests, user-first philosophy to README, init/update + CLAUDE.md split; all shipped
 **Blocking:** Nothing
-**Next action:** Test `/claudify init` and `/claudify update` on a real project to validate the full flow
+**Next action:** Run `/claudify init` on the other project to migrate it to the new structure
 <!-- wrapped: 2026-03-22 -->

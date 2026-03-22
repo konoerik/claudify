@@ -8,6 +8,8 @@ Every project worked on with Claude Code tends to grow its own ad-hoc structure 
 
 claudify fixes this by giving every project the same starting point.
 
+claudify is deliberately user-first. The commands (`/continue`, `/save`, `/pulse`) are prompts you invoke when you decide to — not automations running in the background. The hooks are minimal guardrails, not orchestration. You stay in control of when and how Claude engages with your project.
+
 ## Prerequisites
 
 - [Claude Code](https://docs.anthropic.com/en/docs/claude-code) installed and authenticated
@@ -49,6 +51,8 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 ```
 /claudify init generic /path/to/claudify
 ```
+
+To migrate an existing project that predates `init` — run `init` with your blueprint name. It won't overwrite any files that already exist, but will install new ones (like `.claude/claudify.md` and any commands added since your original setup). After that, `update` works normally.
 
 To pull the latest hooks, commands, and kit rules into an existing project:
 
