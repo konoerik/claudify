@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** Organic validation — using claudify in real projects, waiting for others to discover it
-**Last session:** Added /pulse command to all blueprints; recorded as ADR-4; ran pulse on this project and confirmed on track
+**Current focus:** Validating the new init/update flow on a real project
+**Last session:** Implemented `/claudify init`/`update` subcommands; split CLAUDE.md into user-owned and kit-owned (`.claude/claudify.md`); recorded as ADR-5
 **Blocking:** Nothing
-**Next action:** Use claudify on a real project to validate docs/ layout and command set in practice
-<!-- wrapped: 2026-03-20 -->
+**Next action:** Test `/claudify init` and `/claudify update` on a real project to validate the full flow
+<!-- wrapped: 2026-03-22 -->

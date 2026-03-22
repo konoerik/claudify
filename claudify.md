@@ -1,4 +1,4 @@
-Apply a claudify blueprint to the current project.
+Apply or update a claudify blueprint in the current project.
 
 ## Configuration
 SOURCE=https://raw.githubusercontent.com/konoerik/claudify/main
@@ -8,10 +8,12 @@ SOURCE=https://raw.githubusercontent.com/konoerik/claudify/main
 ## Instructions
 
 The user may pass arguments:
-- `/claudify {name}` — apply a named blueprint from GitHub
-- `/claudify {name} {path}` — apply a named blueprint from a local clone at `{path}`
+- `/claudify init` — choose a blueprint and apply it
+- `/claudify init {name}` — apply a named blueprint from GitHub
+- `/claudify init {name} {path}` — apply a named blueprint from a local clone at `{path}`
+- `/claudify update` — re-fetch hooks, commands, and `.claude/claudify.md` for the installed blueprint
 
-If no blueprint name is given, list the available blueprints below and ask which to apply.
+If no subcommand is given, show the subcommands above and ask what they want to do.
 
 ### Available blueprints
 | Name | Use for |
@@ -23,7 +25,7 @@ If no blueprint name is given, list the available blueprints below and ask which
 
 ---
 
-## Steps
+## Steps: init
 
 ### 1. Greet the user
 
@@ -38,7 +40,7 @@ If a local path was given, set `SOURCE` to that path. Otherwise use the default 
 
 Parse it. Extract:
 - `files[]` — each entry has `src`, `dest`, and optional `executable: true`
-- `setup[]` — `mkdir` and `gitignore` steps
+- `setup[]` — `mkdir`, `gitignore`, and `writefile` steps
 - `next_steps[]` — what to tell the user at the end
 
 ### 3. Generate and run the installer script
@@ -63,7 +65,7 @@ SOURCE="..."  # resolved SOURCE — URL or absolute path
 mkdir -p "DIR_1"
 mkdir -p "DIR_2"
 
-# files
+# files (skipped if already exist)
 if [ -f "DEST" ]; then
   echo "skipped: DEST"
 else
@@ -74,6 +76,10 @@ fi
 
 # gitignore (one line per setup[].gitignore entry)
 grep -qxF "ENTRY" .gitignore 2>/dev/null || echo "ENTRY" >> .gitignore
+
+# writefile (one block per setup[].writefile entry — always writes)
+echo "CONTENT" > "PATH"
+echo "wrote: PATH"
 ```
 
 ### 4. Report
@@ -86,4 +92,54 @@ Then print each item in `next_steps[]` as a numbered list under the heading **Ne
 
 Finally, print this note:
 
-> **Note:** Restart Claude Code now so it discovers the newly installed commands.
+> **Note:** Restart Claude Code now so it discovers the newly installed commands and `.claude/claudify.md`.
+
+---
+
+## Steps: update
+
+### 1. Read the installed blueprint name
+
+Read `.claude/claudify`. It contains a single line: `blueprint: {name}`.
+
+If the file does not exist, stop and tell the user:
+> `.claude/claudify` not found — this project was not set up with `claudify init`. Run `/claudify init` first.
+
+### 2. Resolve source and fetch the blueprint
+
+Use the default `SOURCE` from Configuration (update always pulls from GitHub, not a local path).
+
+Fetch `{SOURCE}/blueprints/{name}.yml` with `curl -fsSL`.
+
+Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks/`, `.claude/commands/`, or `dest` is `.claude/claudify.md`.
+
+### 3. Generate and run the update script
+
+Write a script to `.claudify-update.sh`, run it with `Bash`, then delete it.
+
+Unlike init, update **always overwrites** — no skip logic.
+
+**Template:**
+
+```bash
+#!/usr/bin/env bash
+set -euo pipefail
+SOURCE="..."  # always the remote URL
+
+# directories
+mkdir -p "DIR_1"
+
+# files (always overwrite)
+curl -fsSL "$SOURCE/SRC" -o "DEST"
+# if executable: true, add: chmod +x "DEST"
+echo "updated: DEST"
+```
+
+### 4. Report
+
+Print a clean summary:
+- **Updated:** each file re-fetched
+
+Then print this note:
+
+> **Note:** Restart Claude Code now so it picks up the updated commands and rules.

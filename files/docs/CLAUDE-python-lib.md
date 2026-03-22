@@ -31,25 +31,7 @@ ruff check .
 mypy src/
 ```
 
-## Context Loading
-
-Read on every session:
-- `docs/CONTEXT.md` — current focus, last decisions, next action
-
-Read when the user mentions tasks, features, bugs, or current work:
-- `docs/PLAN.md` — `## Active` section only
-
-Read when touching public API, module structure, or versioning:
-- `docs/ARCHITECTURE.md` — `## Quick Reference` first; full file only if needed
-
-Load only when explicitly asked about goals or priorities:
-- `docs/ROADMAP.md`
-
-Never auto-load:
-- `.claude/archive/`
-
 ## Behavior Rules
-- Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
-- When making an architectural decision (API shape, dependency policy, compatibility boundary), record it with `/log`
 - Never add a runtime dependency without discussion — keep the dependency footprint small
-- Keep `PLAN.md ## Active` short — triage if it exceeds 10 items
+- When making an architectural decision (API shape, dependency policy, compatibility boundary), record it with `/log`
+<!-- Add project-specific rules here. Workflow rules (context loading, commits, plan hygiene) live in .claude/claudify.md. -->

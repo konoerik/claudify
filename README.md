@@ -33,7 +33,7 @@ That's it — you never touch claudify again.
 Open Claude Code in any project and run:
 
 ```
-/claudify
+/claudify init
 ```
 
 Claude will ask which blueprint to apply, then fetch and install everything. Nothing is overwritten if files already exist.
@@ -41,14 +41,22 @@ Claude will ask which blueprint to apply, then fetch and install everything. Not
 To skip the prompt, name the blueprint directly:
 
 ```
-/claudify python-tui
+/claudify init python-tui
 ```
 
 To install from a local clone instead of GitHub (useful when developing blueprints):
 
 ```
-/claudify generic /path/to/claudify
+/claudify init generic /path/to/claudify
 ```
+
+To pull the latest hooks, commands, and kit rules into an existing project:
+
+```
+/claudify update
+```
+
+`update` re-fetches only the kit-managed files (hooks, commands, `.claude/claudify.md`). Your project docs (`CLAUDE.md`, `CONTEXT.md`, etc.) are never touched.
 
 ### Available blueprints
 
@@ -76,6 +84,8 @@ To install from a local clone instead of GitHub (useful when developing blueprin
 `CONTEXT.md` is intentionally tiny — it's the only file loaded every session. Everything else loads on demand, keeping token usage low as projects grow.
 
 `PLAN.md` uses three sections (`## Active`, `## Backlog`, `## Done`) instead of separate files. Claude reads only `## Active` by default.
+
+`.claude/claudify.md` holds the kit-managed rules (context loading policy, behavior rules). It lives separately from `CLAUDE.md` so it can be updated independently without touching your project content.
 
 ### Slash commands installed into your project
 

@@ -35,25 +35,7 @@ pytest
 pytest tests/test_app.py -v
 ```
 
-## Context Loading
-
-Read on every session:
-- `docs/CONTEXT.md` — current focus, last decisions, next action
-
-Read when the user mentions tasks, features, bugs, or current work:
-- `docs/PLAN.md` — `## Active` section only
-
-Read when touching app structure, widgets, screens, or architecture:
-- `docs/ARCHITECTURE.md` — `## Quick Reference` first; full file only if needed
-
-Load only when explicitly asked about goals or priorities:
-- `docs/ROADMAP.md`
-
-Never auto-load:
-- `.claude/archive/`
-
 ## Behavior Rules
-- Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
-- When making an architectural decision (new screen, widget pattern, state model), record it with `/log`
 - Prefer composing existing Textual built-ins over custom implementations
-- Keep `PLAN.md ## Active` short — triage if it exceeds 10 items
+- When making an architectural decision (new screen, widget pattern, state model), record it with `/log`
+<!-- Add project-specific rules here. Workflow rules (context loading, commits, plan hygiene) live in .claude/claudify.md. -->

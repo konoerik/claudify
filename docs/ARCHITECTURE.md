@@ -13,6 +13,13 @@
 ## Decisions (ADRs)
 <!-- Append new ADRs with /decide -->
 
+### ADR-5: Kit-owned rules split into `.claude/claudify.md`; `init`/`update` subcommands
+**Date:** 2026-03-22
+**Context:** claudify never overwrites existing files, so kit rule changes (behavior rules, context loading policy) couldn't reach projects after initial install. `CLAUDE.md` mixed user content with kit-managed sections, making selective updates impossible.
+**Decision:** Split `CLAUDE.md` into two files: `CLAUDE.md` (user-owned — project content only) and `.claude/claudify.md` (kit-owned — context loading + workflow behavior rules). Rename the command to `init` and add an `update` subcommand that re-fetches only kit-managed files (hooks, commands, `.claude/claudify.md`), always overwriting. At init time, write `.claude/claudify` containing `blueprint: {name}` so `update` knows what to fetch without asking.
+**Alternatives considered:** Section-level merging of `CLAUDE.md` (complex, fragile); prompting for blueprint name on every update (inconvenient); documenting manual copy-paste of new rules (not scalable).
+**Consequences:** Users must use `init` instead of bare `/claudify`. Existing projects can now receive kit updates via `update`. `.claude/claudify.md` is fully kit-owned and should never be edited manually. The `.claude/claudify` record file must be kept in sync if a project switches blueprints.
+
 ### ADR-1: CONTEXT.md as the only always-loaded file
 **Date:** 2026-03-14
 **Context:** Loading all project docs every session wastes tokens, especially as files grow with completed work.

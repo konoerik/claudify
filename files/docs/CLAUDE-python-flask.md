@@ -32,25 +32,7 @@ pytest tests/test_app.py -v
 ruff check .
 ```
 
-## Context Loading
-
-Read on every session:
-- `docs/CONTEXT.md` — current focus, last decisions, next action
-
-Read when the user mentions tasks, features, bugs, or current work:
-- `docs/PLAN.md` — `## Active` section only
-
-Read when touching app structure, routes, models, or architecture:
-- `docs/ARCHITECTURE.md` — `## Quick Reference` first; full file only if needed
-
-Load only when explicitly asked about goals or priorities:
-- `docs/ROADMAP.md`
-
-Never auto-load:
-- `.claude/archive/`
-
 ## Behavior Rules
-- Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md` — use `PLAN.md`
-- When making an architectural decision (new blueprint, auth strategy, data model), record it with `/log`
 - Use the app factory pattern — never create the app at module level
-- Keep `PLAN.md ## Active` short — triage if it exceeds 10 items
+- When making an architectural decision (new blueprint, auth strategy, data model), record it with `/log`
+<!-- Add project-specific rules here. Workflow rules (context loading, commits, plan hygiene) live in .claude/claudify.md. -->

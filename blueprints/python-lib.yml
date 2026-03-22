@@ -27,6 +27,9 @@ files:
   - src: files/docs/ROADMAP.md
     dest: docs/ROADMAP.md
 
+  - src: files/docs/claudify.md
+    dest: .claude/claudify.md
+
   # --- Hooks (shared with generic) ---
 
   - src: files/hooks/session-wrap.sh
@@ -62,6 +65,8 @@ files:
 setup:
   - mkdir: .claude/archive
   - gitignore: .claude/archive/
+  - writefile: .claude/claudify
+    content: "blueprint: python-lib"
 
 next_steps:
   - Fill in CLAUDE.md — library purpose, supported Python versions, package manager

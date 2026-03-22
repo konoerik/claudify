@@ -7,10 +7,12 @@ claudify is a Claude Code configuration kit distributed as a single slash comman
 Bash, Markdown, YAML. No build step, no dependencies.
 
 ## Key Conventions
-- `claudify.md` is the primary artifact — it's the global `/claudify` command users install
+- `claudify.md` is the primary artifact — it's the global `/claudify` command users install; supports `init` and `update` subcommands
 - `blueprints/` contains YAML manifests declaring what each blueprint installs
 - `files/` contains the source files blueprints reference — docs, hooks, commands
 - Blueprint-specific doc variants are named `CLAUDE-{type}.md`, `ARCHITECTURE-{type}.md`
+- `files/docs/claudify.md` is the kit-owned rules file; installed to `.claude/claudify.md` in target projects — always overwritten by `update`
+- `.claude/claudify` (in target projects) stores the blueprint name for use by `update`
 - All hook scripts must handle missing files gracefully (no hard exits)
 
 ## Development Workflow
@@ -41,3 +43,4 @@ Never auto-load:
 - When adding a new hook or command, add it to `files/` and reference it in all relevant blueprints
 - When making a design decision about kit conventions, record it with `/log`
 - Keep files in `files/docs/` generic — project-specific content goes in named variants
+- Never commit or push without explicit instruction
