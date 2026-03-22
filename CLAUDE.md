@@ -17,7 +17,10 @@ Bash, Markdown, YAML. No build step, no dependencies.
 
 ## Development Workflow
 ```bash
-# Lint shell scripts
+# Run tests (blueprint integrity + shellcheck)
+bash tests/run.sh
+
+# Lint shell scripts directly
 shellcheck files/hooks/*.sh
 ```
 
