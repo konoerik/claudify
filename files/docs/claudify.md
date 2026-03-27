@@ -1,3 +1,8 @@
+<!-- This project uses claudify — a Claude Code configuration kit.
+     Commands: /continue, /save, /log, /prep, /pulse
+     To update kit files: /claudify update
+     Learn more: https://github.com/konoerik/claudify -->
+
 ## Context Loading
 
 Read on every session:
