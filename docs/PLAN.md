@@ -4,6 +4,7 @@
 
 ## Backlog
 - [ ] Add tone and interaction guidelines to CLAUDE.md template — grounding defaults for conciseness, affirmations, unsolicited work, clarification behavior
+- [ ] Native Windows/PowerShell support — platform detection in claudify.md, PowerShell script templates for init and update, silent no-op for executable:true; blocked on having a Windows environment to test against
 - [ ] Unfilled CLAUDE.md stubs — post-init nudge pointing out empty sections; stub detection in /continue (one-line warning); leaning toward reminder/checkpoint approach rather than an explicit command, but name TBD if command is added
 - [ ] Non-coding blueprint: identify 2-3 concrete use cases (e.g. writing a book, research project, design project) to find the right abstraction — name, ARCHITECTURE.md reframing, trimmed command set
 - [ ] Audit + migrate feature: structural drift detection (audit.sh) and content migration (/migrate command) for existing projects — removed for now due to convoluted UX, revisit once core flow is stable

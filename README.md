@@ -70,6 +70,7 @@ To pull the latest hooks, commands, and kit rules into an existing project:
 | `python-flask` | Flask web applications |
 | `python-lib` | Python libraries |
 | `python-tui` | Python TUI projects using [Textual](https://textual.textualize.io) |
+| `simple-web` | Single-page HTML/CSS/JS apps — no build step, CDN libraries |
 
 ---
 

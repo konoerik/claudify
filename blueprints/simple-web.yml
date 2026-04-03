@@ -1,0 +1,63 @@
+name: Simple Web
+description: Claude Code setup for single-page HTML/CSS/JS apps — no build step, CDN libraries only
+
+files:
+
+  # --- Project documents ---
+
+  - src: files/docs/CLAUDE-simple-web.md
+    dest: CLAUDE.md
+
+  - src: files/docs/CONTEXT.md
+    dest: docs/CONTEXT.md
+
+  - src: files/docs/PLAN.md
+    dest: docs/PLAN.md
+
+  - src: files/docs/ARCHITECTURE-simple-web.md
+    dest: docs/ARCHITECTURE.md
+
+  - src: files/docs/ROADMAP.md
+    dest: docs/ROADMAP.md
+
+  - src: files/docs/claudify.md
+    dest: .claude/claudify.md
+
+  # --- Hooks (shared with generic) ---
+
+  - src: files/hooks/session-wrap.sh
+    dest: .claude/hooks/stop/session-wrap.sh
+    executable: true
+
+  - src: files/hooks/guard-naming.sh
+    dest: .claude/hooks/pre-tool-use/guard-naming.sh
+    executable: true
+
+  # --- Commands (shared with generic) ---
+
+  - src: files/commands/continue.md
+    dest: .claude/commands/continue.md
+
+  - src: files/commands/save.md
+    dest: .claude/commands/save.md
+
+  - src: files/commands/log.md
+    dest: .claude/commands/log.md
+
+  - src: files/commands/prep.md
+    dest: .claude/commands/prep.md
+
+  - src: files/commands/pulse.md
+    dest: .claude/commands/pulse.md
+
+
+setup:
+  - mkdir: .claude/archive
+  - gitignore: .claude/archive/
+  - writefile: .claude/claudify
+    content: "blueprint: simple-web"
+
+next_steps:
+  - Fill in CLAUDE.md — what the app does, which CDN libraries you're using
+  - Fill in ARCHITECTURE.md ## Quick Reference — libraries, data source, key constraint
+  - Create index.html, style.css, app.js to get started

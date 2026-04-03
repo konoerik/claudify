@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** WSL2 fix shipped; validating on the affected project
-**Last session:** Fixed WSL2 CRLF issue — CRLF strip in both script templates, .gitattributes added, README updated; recorded as ADR-6
+**Current focus:** Organic validation across projects; backlog steady
+**Last session:** Added simple-web blueprint (single-page HTML/CSS/JS, CDN only, npx serve + python3 fallback); 68 tests passing
 **Blocking:** Nothing
-**Next action:** Run `/claudify update` on the WSL2 project to confirm the fix resolves issue #1
+**Next action:** Test simple-web blueprint on a real project
 <!-- wrapped: 2026-04-03 -->
