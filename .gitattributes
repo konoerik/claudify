@@ -1,0 +1,6 @@
+# Enforce LF line endings for all source files
+# Prevents CRLF issues when scripts are fetched via curl on WSL2 or Linux
+
+*.sh    text eol=lf
+*.md    text eol=lf
+*.yml   text eol=lf

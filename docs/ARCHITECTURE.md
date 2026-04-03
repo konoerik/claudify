@@ -13,6 +13,13 @@
 ## Decisions (ADRs)
 <!-- Append new ADRs with /decide -->
 
+### ADR-6: Keep create→run→delete script pattern; fix WSL2 CRLF via strip step
+**Date:** 2026-04-03
+**Context:** WSL2 users hit CRLF line ending failures when Claude Code's Write tool produced CRLF scripts. Alternative fix was to use `bash -s` heredocs to avoid writing to disk entirely, which would eliminate the CRLF problem.
+**Decision:** Keep the create→run→delete pattern and add a `sed -i 's/\r//'` strip step before execution. Also added `.gitattributes` enforcing LF for all source files in the repo.
+**Alternatives considered:** `bash -s << 'EOF'` heredoc approach — avoids temp files and CRLF entirely, but creates asymmetry if native Windows (PowerShell) support is ever added, since PowerShell has no heredoc equivalent. The file-based pattern is symmetric: generate a script, run it, delete it — regardless of platform.
+**Consequences:** WSL2 is now supported when project files live on the Linux filesystem. The create→run→delete pattern is preserved and extensible to a future PowerShell path. The CRLF strip is a no-op on macOS and Linux.
+
 ### ADR-5: Kit-owned rules split into `.claude/claudify.md`; `init`/`update` subcommands
 **Date:** 2026-03-22
 **Context:** claudify never overwrites existing files, so kit rule changes (behavior rules, context loading policy) couldn't reach projects after initial install. `CLAUDE.md` mixed user content with kit-managed sections, making selective updates impossible.

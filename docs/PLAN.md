@@ -11,6 +11,7 @@
 - [ ] post-tool-use hook: auto-lint on edit
 
 ## Done
+- [x] WSL2 CRLF fix — CRLF strip step in both script templates; `.gitattributes` LF enforcement; README updated; create→run→delete pattern preserved for future Windows symmetry
 - [x] `/claudify init` / `/claudify update` — split CLAUDE.md into user-owned + kit-owned (`.claude/claudify.md`); update re-fetches hooks, commands, and kit rules; blueprint name stored in `.claude/claudify`
 - [x] Revisit command names → continue, save, log, prep; dropped arch and standup
 - [x] stop hook: CONTEXT.md staleness check + /wrap command for Claude-assisted session wrap

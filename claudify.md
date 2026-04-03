@@ -45,8 +45,12 @@ Parse it. Extract:
 
 ### 3. Generate and run the installer script
 
-Using the blueprint data and the template below, write a script to `.claudify-install.sh`,
-run it with `Bash`, then delete it.
+Using the blueprint data and the template below, write a script to `.claudify-install.sh`.
+Then strip any CRLF line endings (required on WSL2), run it, and delete it:
+
+```bash
+sed -i 's/\r//' .claudify-install.sh && bash .claudify-install.sh && rm .claudify-install.sh
+```
 
 Fill in one block per `files[]` entry and one line per `setup[]` entry.
 Collect all unique parent directories (from `dest` paths and `setup[].mkdir` entries)
@@ -115,7 +119,11 @@ Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks
 
 ### 3. Generate and run the update script
 
-Write a script to `.claudify-update.sh`, run it with `Bash`, then delete it.
+Write a script to `.claudify-update.sh`. Then strip any CRLF line endings (required on WSL2), run it, and delete it:
+
+```bash
+sed -i 's/\r//' .claudify-update.sh && bash .claudify-update.sh && rm .claudify-update.sh
+```
 
 Unlike init, update **always overwrites** — no skip logic.
 
