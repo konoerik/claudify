@@ -11,6 +11,9 @@ Read on every session:
 Read when the user mentions tasks, features, bugs, or current work:
 - `docs/PLAN.md` — `## Active` section only
 
+Read when writing or editing code:
+- `docs/CONVENTIONS.md` — canonical style reference; pattern-match before writing
+
 Read when touching code structure, architecture, or making structural decisions:
 - `docs/ARCHITECTURE.md` — `## Quick Reference` first; full file only if needed
 

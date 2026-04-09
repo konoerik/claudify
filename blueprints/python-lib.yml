@@ -24,6 +24,9 @@ files:
   - src: files/docs/ARCHITECTURE-python-lib.md
     dest: docs/ARCHITECTURE.md
 
+  - src: files/docs/CONVENTIONS-python-lib.md
+    dest: docs/CONVENTIONS.md
+
   - src: files/docs/ROADMAP.md
     dest: docs/ROADMAP.md
 

@@ -24,6 +24,9 @@ files:
   - src: files/docs/ARCHITECTURE-python-flask.md
     dest: docs/ARCHITECTURE.md
 
+  - src: files/docs/CONVENTIONS-python-flask.md
+    dest: docs/CONVENTIONS.md
+
   - src: files/docs/ROADMAP.md
     dest: docs/ROADMAP.md
 

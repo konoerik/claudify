@@ -27,6 +27,9 @@ files:
   - src: files/docs/ARCHITECTURE-python-tui.md
     dest: docs/ARCHITECTURE.md
 
+  - src: files/docs/CONVENTIONS-python-tui.md
+    dest: docs/CONVENTIONS.md
+
   - src: files/docs/ROADMAP.md
     dest: docs/ROADMAP.md
 

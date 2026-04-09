@@ -17,6 +17,9 @@ files:
   - src: files/docs/ARCHITECTURE-simple-web.md
     dest: docs/ARCHITECTURE.md
 
+  - src: files/docs/CONVENTIONS-simple-web.md
+    dest: docs/CONVENTIONS.md
+
   - src: files/docs/ROADMAP.md
     dest: docs/ROADMAP.md
 
