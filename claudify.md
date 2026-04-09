@@ -22,6 +22,7 @@ If no subcommand is given, show the subcommands above and ask what they want to 
 | `python-flask` | Flask web applications |
 | `python-lib` | Python libraries |
 | `python-tui` | Python TUI projects using Textual |
+| `python-only` | Pure Python — stdlib only, no external dependencies |
 | `simple-web` | Single-page HTML/CSS/JS apps, no build step |
 
 ---

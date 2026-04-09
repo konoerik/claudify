@@ -1,0 +1,66 @@
+name: Python Only
+description: Claude Code setup for pure Python projects — stdlib only, no external dependencies
+
+files:
+
+  # --- Project documents ---
+
+  - src: files/docs/CLAUDE-python-only.md
+    dest: CLAUDE.md
+
+  - src: files/docs/CONTEXT.md
+    dest: docs/CONTEXT.md
+
+  - src: files/docs/PLAN.md
+    dest: docs/PLAN.md
+
+  - src: files/docs/ARCHITECTURE-python-only.md
+    dest: docs/ARCHITECTURE.md
+
+  - src: files/docs/CONVENTIONS-python-only.md
+    dest: docs/CONVENTIONS.md
+
+  - src: files/docs/ROADMAP.md
+    dest: docs/ROADMAP.md
+
+  - src: files/docs/claudify.md
+    dest: .claude/claudify.md
+
+  # --- Hooks (shared with generic) ---
+
+  - src: files/hooks/session-wrap.sh
+    dest: .claude/hooks/stop/session-wrap.sh
+    executable: true
+
+  - src: files/hooks/guard-naming.sh
+    dest: .claude/hooks/pre-tool-use/guard-naming.sh
+    executable: true
+
+  # --- Commands (shared with generic) ---
+
+  - src: files/commands/continue.md
+    dest: .claude/commands/continue.md
+
+  - src: files/commands/save.md
+    dest: .claude/commands/save.md
+
+  - src: files/commands/log.md
+    dest: .claude/commands/log.md
+
+  - src: files/commands/prep.md
+    dest: .claude/commands/prep.md
+
+  - src: files/commands/pulse.md
+    dest: .claude/commands/pulse.md
+
+
+setup:
+  - mkdir: .claude/archive
+  - gitignore: .claude/archive/
+  - writefile: .claude/claudify
+    content: "blueprint: python-only"
+
+next_steps:
+  - Fill in CLAUDE.md — what the tool does, entry point shape
+  - Fill in ARCHITECTURE.md ## Quick Reference — entry point, key paths
+  - Fill in ARCHITECTURE.md ## Detail — structure, CLI interface, data flow

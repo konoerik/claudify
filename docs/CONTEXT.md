@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** Organic validation; conventions files freshly added
-**Last session:** Added CONVENTIONS.md to all four blueprints (style reference with code samples); context loading rule added to .claude/claudify.md; 72 tests passing
+**Current focus:** Organic validation; blueprint family growing steadily
+**Last session:** Added python-only blueprint (stdlib only, unittest, argparse conventions); 86 tests passing
 **Blocking:** Nothing
-**Next action:** Test conventions file in a real project — does it reduce style-inspection time at session start?
+**Next action:** Use python-only on a real constrained project to validate the conventions
 <!-- wrapped: 2026-04-09 -->
