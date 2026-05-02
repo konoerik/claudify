@@ -20,6 +20,8 @@
 **Alternatives considered:** `bash -s << 'EOF'` heredoc approach — avoids temp files and CRLF entirely, but creates asymmetry if native Windows (PowerShell) support is ever added, since PowerShell has no heredoc equivalent. The file-based pattern is symmetric: generate a script, run it, delete it — regardless of platform.
 **Consequences:** WSL2 is now supported when project files live on the Linux filesystem. The create→run→delete pattern is preserved and extensible to a future PowerShell path. The CRLF strip is a no-op on macOS and Linux.
 
+**2026-05-02 update — parallel downloads + failure handling:** File fetches in the generated script now run as background subshells (`( ... ) & _pids+=($!)`), with `wait "$_pid"` per PID to detect individual failures. An `_ok` flag + `EXIT` trap surfaces incomplete runs. The invocation changed from `&& rm` to `; _s=$?; rm -f ...; exit $_s` so the temp script is always deleted regardless of outcome.
+
 ### ADR-5: Kit-owned rules split into `.claude/claudify.md`; `init`/`update` subcommands
 **Date:** 2026-03-22
 **Context:** claudify never overwrites existing files, so kit rule changes (behavior rules, context loading policy) couldn't reach projects after initial install. `CLAUDE.md` mixed user content with kit-managed sections, making selective updates impossible.

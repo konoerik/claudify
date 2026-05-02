@@ -51,7 +51,7 @@ Using the blueprint data and the template below, write a script to `.claudify-in
 Then strip any CRLF line endings (required on WSL2), run it, and delete it:
 
 ```bash
-sed -i 's/\r//' .claudify-install.sh && bash .claudify-install.sh && rm .claudify-install.sh
+sed -i 's/\r//' .claudify-install.sh; bash .claudify-install.sh; _s=$?; rm -f .claudify-install.sh; exit $_s
 ```
 
 Fill in one block per `files[]` entry and one line per `setup[]` entry.
@@ -67,18 +67,30 @@ Use `curl -fsSL "$SOURCE/SRC" -o "DEST"` for remote sources and `cp "$SOURCE/SRC
 set -euo pipefail
 SOURCE="..."  # resolved SOURCE — URL or absolute path
 
+_ok=0
+trap '[[ $_ok -eq 0 ]] && echo "claudify: install incomplete — re-run /claudify init to finish"' EXIT
+
 # directories
 mkdir -p "DIR_1"
 mkdir -p "DIR_2"
 
-# files (skipped if already exist)
-if [ -f "DEST" ]; then
-  echo "skipped: DEST"
-else
-  curl -fsSL "$SOURCE/SRC" -o "DEST"  # remote; or: cp "$SOURCE/SRC" "DEST"  # local
-  # if executable: true, add: chmod +x "DEST"
-  echo "installed: DEST"
-fi
+# files — parallel downloads (skipped if already exist)
+_pids=()
+
+(
+  if [ -f "DEST" ]; then
+    echo "skipped: DEST"
+  else
+    curl -fsSL "$SOURCE/SRC" -o "DEST"  # remote; or: cp "$SOURCE/SRC" "DEST"  # local
+    # if executable: true, add: chmod +x "DEST"
+    echo "installed: DEST"
+  fi
+) & _pids+=($!)
+
+# wait for all downloads; exit if any failed
+_failed=0
+for _pid in "${_pids[@]}"; do wait "$_pid" || _failed=1; done
+[ "$_failed" -eq 0 ] || exit 1
 
 # gitignore (one line per setup[].gitignore entry)
 grep -qxF "ENTRY" .gitignore 2>/dev/null || echo "ENTRY" >> .gitignore
@@ -86,6 +98,8 @@ grep -qxF "ENTRY" .gitignore 2>/dev/null || echo "ENTRY" >> .gitignore
 # writefile (one block per setup[].writefile entry — always writes)
 echo "CONTENT" > "PATH"
 echo "wrote: PATH"
+
+_ok=1
 ```
 
 ### 4. Report
@@ -124,7 +138,7 @@ Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks
 Write a script to `.claudify-update.sh`. Then strip any CRLF line endings (required on WSL2), run it, and delete it:
 
 ```bash
-sed -i 's/\r//' .claudify-update.sh && bash .claudify-update.sh && rm .claudify-update.sh
+sed -i 's/\r//' .claudify-update.sh; bash .claudify-update.sh; _s=$?; rm -f .claudify-update.sh; exit $_s
 ```
 
 Unlike init, update **always overwrites** — no skip logic.
@@ -136,13 +150,27 @@ Unlike init, update **always overwrites** — no skip logic.
 set -euo pipefail
 SOURCE="..."  # always the remote URL
 
+_ok=0
+trap '[[ $_ok -eq 0 ]] && echo "claudify: update incomplete — re-run /claudify update to finish"' EXIT
+
 # directories
 mkdir -p "DIR_1"
 
-# files (always overwrite)
-curl -fsSL "$SOURCE/SRC" -o "DEST"
-# if executable: true, add: chmod +x "DEST"
-echo "updated: DEST"
+# files — parallel downloads (always overwrite)
+_pids=()
+
+(
+  curl -fsSL "$SOURCE/SRC" -o "DEST"
+  # if executable: true, add: chmod +x "DEST"
+  echo "updated: DEST"
+) & _pids+=($!)
+
+# wait for all downloads; exit if any failed
+_failed=0
+for _pid in "${_pids[@]}"; do wait "$_pid" || _failed=1; done
+[ "$_failed" -eq 0 ] || exit 1
+
+_ok=1
 ```
 
 ### 4. Report
