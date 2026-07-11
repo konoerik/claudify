@@ -13,6 +13,13 @@
 ## Decisions (ADRs)
 <!-- Append new ADRs with /decide -->
 
+### ADR-7: Portable runner line — `tr` for CRLF strip, no `exit`, curl timeouts
+**Date:** 2026-07-11
+**Context:** The 2026-05-02 runner invocation (`; _s=$?; rm -f ...; exit $_s`) ended with `exit`, which kills Claude Code's persistent Bash session — installer output was lost ("Bash completed with no output") and subsequent commands started in a fresh shell at a different working directory, so installs appeared missing or genuinely failed on re-run (macOS/Linux; documented in bug-report-claudify-exit.md). Separately, `sed -i 's/\r//'` is GNU-only syntax: BSD sed on macOS consumes the pattern as the `-i` backup suffix and misparses the filename as the sed script, so the CRLF strip errored and never ran on Mac. The parallel curl calls also had no timeout, so a stalled connection could block the `wait` loop indefinitely.
+**Decision:** Runner line is now `tr -d '\r' < SCRIPT > SCRIPT.tmp && mv SCRIPT.tmp SCRIPT; bash SCRIPT; rm -f SCRIPT` — portable CRLF strip, always-delete, and no `exit` so the harness shell survives. Added `--max-time 60` to the parallel curl lines in both templates. Success/failure is conveyed through script output (the `_ok` flag + EXIT trap), not the invocation's exit status.
+**Alternatives considered:** Dual-syntax sed fallback (`sed -i.bak ... || sed -i ...`) — works but keeps two code paths; keeping `exit $_s` for status propagation — fundamentally incompatible with Claude Code's persistent-shell model.
+**Consequences:** The Bash tool's exit status now reflects the trailing `rm`, not the installer — the skill must parse output text, which it already does. WSL2 CRLF handling is preserved via `tr` (POSIX, identical everywhere). Curl stalls are bounded at 60s per file.
+
 ### ADR-6: Keep create→run→delete script pattern; fix WSL2 CRLF via strip step
 **Date:** 2026-04-03
 **Context:** WSL2 users hit CRLF line ending failures when Claude Code's Write tool produced CRLF scripts. Alternative fix was to use `bash -s` heredocs to avoid writing to disk entirely, which would eliminate the CRLF problem.

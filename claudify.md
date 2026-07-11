@@ -51,7 +51,7 @@ Using the blueprint data and the template below, write a script to `.claudify-in
 Then strip any CRLF line endings (required on WSL2), run it, and delete it:
 
 ```bash
-sed -i 's/\r//' .claudify-install.sh; bash .claudify-install.sh; _s=$?; rm -f .claudify-install.sh; exit $_s
+tr -d '\r' < .claudify-install.sh > .claudify-install.tmp && mv .claudify-install.tmp .claudify-install.sh; bash .claudify-install.sh; rm -f .claudify-install.sh
 ```
 
 Fill in one block per `files[]` entry and one line per `setup[]` entry.
@@ -81,7 +81,7 @@ _pids=()
   if [ -f "DEST" ]; then
     echo "skipped: DEST"
   else
-    curl -fsSL "$SOURCE/SRC" -o "DEST"  # remote; or: cp "$SOURCE/SRC" "DEST"  # local
+    curl -fsSL --max-time 60 "$SOURCE/SRC" -o "DEST"  # remote; or: cp "$SOURCE/SRC" "DEST"  # local
     # if executable: true, add: chmod +x "DEST"
     echo "installed: DEST"
   fi
@@ -138,7 +138,7 @@ Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks
 Write a script to `.claudify-update.sh`. Then strip any CRLF line endings (required on WSL2), run it, and delete it:
 
 ```bash
-sed -i 's/\r//' .claudify-update.sh; bash .claudify-update.sh; _s=$?; rm -f .claudify-update.sh; exit $_s
+tr -d '\r' < .claudify-update.sh > .claudify-update.tmp && mv .claudify-update.tmp .claudify-update.sh; bash .claudify-update.sh; rm -f .claudify-update.sh
 ```
 
 Unlike init, update **always overwrites** — no skip logic.
@@ -160,7 +160,7 @@ mkdir -p "DIR_1"
 _pids=()
 
 (
-  curl -fsSL "$SOURCE/SRC" -o "DEST"
+  curl -fsSL --max-time 60 "$SOURCE/SRC" -o "DEST"
   # if executable: true, add: chmod +x "DEST"
   echo "updated: DEST"
 ) & _pids+=($!)
