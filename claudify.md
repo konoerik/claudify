@@ -43,6 +43,7 @@ If a local path was given, set `SOURCE` to that path. Otherwise use the default 
 Parse it. Extract:
 - `files[]` — each entry has `src`, `dest`, and optional `executable: true`
 - `setup[]` — `mkdir`, `gitignore`, and `writefile` steps
+- `permissions` — `allow[]` (auto-granted rules) and optional `ask[]` (entries with `rule` and `purpose`)
 - `next_steps[]` — what to tell the user at the end
 
 ### 3. Generate and run the installer script
@@ -102,11 +103,28 @@ echo "wrote: PATH"
 _ok=1
 ```
 
-### 4. Report
+### 4. Apply permissions
+
+`.claude/settings.json` is user-owned — **merge into it, never overwrite it**. Do this yourself with Read/Edit/Write (not in the installer script):
+
+- If `.claude/settings.json` does not exist, create it:
+  ```json
+  {
+    "permissions": {
+      "allow": ["...each permissions.allow entry..."]
+    }
+  }
+  ```
+- If it exists, read it and append only the `permissions.allow[]` entries that are missing from its `permissions.allow` array (create the key if absent). Preserve all existing entries, all other settings, and never modify `deny`.
+
+Then, if the blueprint has `permissions.ask[]` entries, list each `rule` with its `purpose` and ask the user which to enable (all, some, or none). Merge the accepted ones the same way.
+
+### 5. Report
 
 Parse the script output. Print a clean summary:
 - **Installed:** each file written
 - **Skipped:** each file that already existed (no action taken)
+- **Permissions:** rules added to `.claude/settings.json` (and how many were already present)
 
 Then print each item in `next_steps[]` as a numbered list under the heading **Next steps**.
 
@@ -131,7 +149,7 @@ Use the default `SOURCE` from Configuration (update always pulls from GitHub, no
 
 Fetch `{SOURCE}/blueprints/{name}.yml` with `curl -fsSL`.
 
-Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks/`, `.claude/commands/`, or `dest` is `.claude/claudify.md`.
+Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks/`, `.claude/commands/`, or `dest` is `.claude/claudify.md`. Also extract `permissions.allow[]`.
 
 ### 3. Generate and run the update script
 
@@ -173,10 +191,15 @@ for _pid in "${_pids[@]}"; do wait "$_pid" || _failed=1; done
 _ok=1
 ```
 
-### 4. Report
+### 4. Merge permissions
+
+Merge `permissions.allow[]` into `.claude/settings.json` exactly as in init step 4: add missing entries only, create the file or the `allow` key if absent, preserve everything else, never touch `deny`. Do not run the `ask` wizard on update — new optional rules are only offered at init.
+
+### 5. Report
 
 Print a clean summary:
 - **Updated:** each file re-fetched
+- **Permissions:** rules added (if any)
 
 Then print this note:
 

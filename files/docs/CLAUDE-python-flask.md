@@ -6,7 +6,7 @@
 ## Tech Stack
 - **Language:** Python 3.10+
 - **Framework:** [Flask](https://flask.palletsprojects.com)
-- **Package manager:** <!-- uv / pip / poetry -->
+- **Package manager:** uv (see Operating Rules)
 - **Database:** <!-- e.g. PostgreSQL via SQLAlchemy, SQLite, none -->
 - **Testing:** pytest + pytest-flask
 
@@ -20,17 +20,32 @@
 ## Development Workflow
 ```bash
 # Run dev server
-flask run --debug
+uv run flask run --debug
 
 # Run tests
-pytest
+uv run pytest
 
 # Run a single test
-pytest tests/test_app.py -v
+uv run pytest tests/test_app.py -v
 
 # Lint
-ruff check .
+uv run ruff check .
 ```
+
+## Operating Rules
+
+### Environment
+- Always `uv` with the local `.venv` — never the system Python
+- Every command goes through the venv: `uv run pytest`, `uv run flask ...`
+- Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
+
+### Debugging
+Work this sequence — do not improvise tooling:
+1. **Reproduce** — smallest command that shows the failure (one test, one `curl` request) before changing anything
+2. **Read the full traceback** — before forming a hypothesis
+3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
+4. **Instrument** — stdlib only: `app.logger`, `breakpoint()`; remove instrumentation once fixed
+5. **Never add a dependency to debug** — no debug toolbars or helper packages; existing tools only
 
 ## Behavior Rules
 - Use the app factory pattern — never create the app at module level

@@ -6,7 +6,7 @@
 ## Tech Stack
 - **Language:** Python 3.10+
 - **TUI framework:** [Textual](https://textual.textualize.io)
-- **Package manager:** <!-- uv / pip / poetry -->
+- **Package manager:** uv (see Operating Rules)
 - **Testing:** pytest + `textual.testing.AppTest`
 
 ## Key Conventions
@@ -20,20 +20,35 @@
 ## Development Workflow
 ```bash
 # Run in dev mode (hot reload + Textual devtools)
-textual run --dev app.py
+uv run textual run --dev app.py
 
 # Run normally
-python app.py
+uv run python app.py
 
 # Open Textual devtools console
-textual console
+uv run textual console
 
 # Run tests
-pytest
+uv run pytest
 
 # Run a single test
-pytest tests/test_app.py -v
+uv run pytest tests/test_app.py -v
 ```
+
+## Operating Rules
+
+### Environment
+- Always `uv` with the local `.venv` — never the system Python
+- Every command goes through the venv: `uv run pytest`, `uv run textual ...`
+- Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
+
+### Debugging
+Work this sequence — do not improvise tooling:
+1. **Reproduce** — smallest command that shows the failure (one test, or one interaction in `textual run --dev`)
+2. **Read the full traceback** — before forming a hypothesis
+3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
+4. **Instrument** — the app owns stdout, so no `print()`/`breakpoint()` in a running TUI: use `self.log()` and watch it in `textual console`; remove instrumentation once fixed
+5. **Never add a dependency to debug** — existing tools only
 
 ## Behavior Rules
 - Prefer composing existing Textual built-ins over custom implementations

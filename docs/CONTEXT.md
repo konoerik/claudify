@@ -2,7 +2,7 @@
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
 **Current focus:** Organic validation; blueprint family growing steadily
-**Last session:** Fixed installer runner regression — portable `tr` CRLF strip, dropped shell-killing `exit $_s`, added `curl --max-time 60`; recorded as ADR-7; 86 tests passing
-**Blocking:** Fix unverified on Linux/WSL — changes uncommitted; `bug-report-claudify-exit.md` kept local until verified, then delete
-**Next action:** Verify the new runner line in real Mac/Linux/WSL sessions, then commit/push and delete the bug report
-<!-- wrapped: 2026-07-11 -->
+**Last session:** Shipped blueprint `permissions` section (ADR-8) and per-template `## Operating Rules` — uv/venv mandate + 5-step debugging methodology (ADR-9); e2e-verified init incl. settings merge, skip, and failure paths; 92 tests passing
+**Blocking:** Both features uncommitted; runner fix (ADR-7) still unverified on Linux/WSL — `bug-report-claudify-exit.md` stays local until then
+**Next action:** Commit and push permissions + operating rules; then verify the runner on Linux/WSL and delete the bug report
+<!-- wrapped: 2026-07-16 -->

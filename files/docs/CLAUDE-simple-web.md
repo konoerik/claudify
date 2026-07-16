@@ -20,9 +20,23 @@
 open index.html
 
 # Serve locally (required if loading local JSON or using ES modules)
-npx serve          # Node — no install needed
-python3 -m http.server  # Python alternative
+python3 -m http.server
 ```
+
+## Operating Rules
+
+### Environment
+- There is no toolchain — never run `npm install`, create `package.json`, or add a bundler
+- New libraries arrive only as version-pinned CDN `<script>` tags, and only after discussion
+- Serve locally with `python3 -m http.server` when the page needs local files or ES modules
+
+### Debugging
+Work this sequence — do not improvise tooling:
+1. **Reproduce** — exact steps in the browser that show the failure, starting from a hard reload
+2. **Read the console first** — errors and failed requests (Network tab) before forming a hypothesis
+3. **Isolate** — DevTools breakpoints and the Elements panel; `git diff`/`git log` if it used to work
+4. **Instrument** — sparing `console.log`; remove instrumentation once fixed
+5. **Never add a library to debug** — existing DevTools only
 
 ## Behavior Rules
 - No build step — if a library isn't available via CDN, discuss before adding a bundler

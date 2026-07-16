@@ -68,6 +68,25 @@ setup:
   - writefile: .claude/claudify
     content: "blueprint: generic"
 
+permissions:
+  # Read-only commands, merged into .claude/settings.json permissions.allow
+  # by /claudify (init and update). Existing entries are never removed.
+  allow:
+    - "Bash(ls:*)"
+    - "Bash(cat:*)"
+    - "Bash(head:*)"
+    - "Bash(tail:*)"
+    - "Bash(wc:*)"
+    - "Bash(find:*)"
+    - "Bash(grep:*)"
+    - "Bash(rg:*)"
+    - "Bash(tree:*)"
+    - "Bash(git status:*)"
+    - "Bash(git diff:*)"
+    - "Bash(git log:*)"
+    - "Bash(git show:*)"
+  # No ask entries — generic has no stack-specific commands.
+
 next_steps:
   - Fill in CLAUDE.md — project overview, stack, conventions
   - Fill in ARCHITECTURE.md ## Quick Reference — stack, entry points, key constraints

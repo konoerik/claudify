@@ -18,5 +18,19 @@
 # lint:
 ```
 
+## Operating Rules
+
+### Environment
+- Use the project's declared toolchain and package manager — never system-level or globally installed tools
+- A dependency change must land in the project's manifest (lockfile included); never install ad hoc
+
+### Debugging
+Work this sequence — do not improvise tooling:
+1. **Reproduce** — smallest command that shows the failure before changing anything
+2. **Read the full error output** — before forming a hypothesis
+3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
+4. **Instrument** — the language's built-in logging/debugger only; remove instrumentation once fixed
+5. **Never add a dependency to debug** — existing tools only
+
 ## Behavior Rules
 <!-- Add project-specific rules here. Workflow rules (context loading, commits, plan hygiene) live in .claude/claudify.md. -->

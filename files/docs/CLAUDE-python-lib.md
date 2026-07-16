@@ -5,7 +5,7 @@
 
 ## Tech Stack
 - **Language:** Python 3.10+
-- **Package manager:** <!-- uv / pip / poetry -->
+- **Package manager:** uv (see Operating Rules)
 - **Testing:** pytest
 - **Distribution:** <!-- PyPI / internal / private -->
 
@@ -17,19 +17,34 @@
 
 ## Development Workflow
 ```bash
-# Install in editable mode
-pip install -e ".[dev]"
+# Install the environment (editable, with dev extras)
+uv sync
 
 # Run tests
-pytest
+uv run pytest
 
 # Run tests with coverage
-pytest --cov
+uv run pytest --cov
 
 # Lint and type-check
-ruff check .
-mypy src/
+uv run ruff check .
+uv run mypy src/
 ```
+
+## Operating Rules
+
+### Environment
+- Always `uv` with the local `.venv` — never the system Python
+- Every command goes through the venv: `uv run pytest`, `uv run mypy ...`
+- Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
+
+### Debugging
+Work this sequence — do not improvise tooling:
+1. **Reproduce** — write the failing test first; it becomes the regression test
+2. **Read the full traceback** — before forming a hypothesis
+3. **Isolate** — narrow with the existing suite and `git diff`/`git log`; bisect if the regression point is unknown
+4. **Instrument** — stdlib only: `logging`, `breakpoint()`; remove instrumentation once fixed
+5. **Never add a dependency to debug** — existing tools only
 
 ## Behavior Rules
 - Never add a runtime dependency without discussion — keep the dependency footprint small

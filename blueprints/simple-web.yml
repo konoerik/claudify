@@ -60,6 +60,28 @@ setup:
   - writefile: .claude/claudify
     content: "blueprint: simple-web"
 
+permissions:
+  # Read-only commands, merged into .claude/settings.json permissions.allow
+  # by /claudify (init and update). Existing entries are never removed.
+  allow:
+    - "Bash(ls:*)"
+    - "Bash(cat:*)"
+    - "Bash(head:*)"
+    - "Bash(tail:*)"
+    - "Bash(wc:*)"
+    - "Bash(find:*)"
+    - "Bash(grep:*)"
+    - "Bash(rg:*)"
+    - "Bash(tree:*)"
+    - "Bash(git status:*)"
+    - "Bash(git diff:*)"
+    - "Bash(git log:*)"
+    - "Bash(git show:*)"
+  # Offered at init — user opts in per project.
+  ask:
+    - rule: "Bash(python3 -m http.server:*)"
+      purpose: serve the page locally
+
 next_steps:
   - Fill in CLAUDE.md — what the app does, which CDN libraries you're using
   - Fill in ARCHITECTURE.md ## Quick Reference — libraries, data source, key constraint

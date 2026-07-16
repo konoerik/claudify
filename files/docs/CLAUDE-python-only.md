@@ -17,17 +17,32 @@
 ## Development Workflow
 ```bash
 # Run as script
-python main.py --help
+uv run python main.py --help
 
 # Run as package
-python -m mypackage
+uv run python -m mypackage
 
 # Run all tests
-python -m unittest discover
+uv run python -m unittest discover
 
 # Run a specific test module
-python -m unittest tests.test_module -v
+uv run python -m unittest tests.test_module -v
 ```
+
+## Operating Rules
+
+### Environment
+- Pin the interpreter with `uv` and a local `.venv` (`uv venv`) — never whatever `python3` happens to resolve to
+- Every command goes through it: `uv run python ...`
+- No packages, period — `uv add` / `pip install` are never valid moves; if a problem seems to need one, discuss first
+
+### Debugging
+Work this sequence — do not improvise tooling:
+1. **Reproduce** — smallest command that shows the failure (one unittest case, one CLI invocation)
+2. **Read the full traceback** — before forming a hypothesis
+3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
+4. **Instrument** — `logging`, `breakpoint()`, `traceback.print_stack()`; remove instrumentation once fixed
+5. **Never add a dependency to debug** — the stdlib-only rule has no debugging exception
 
 ## Behavior Rules
 - stdlib only — no pip, no requirements.txt with runtime dependencies

@@ -46,6 +46,21 @@ for blueprint in "$ROOT"/blueprints/*.yml; do
 done
 
 # ---------------------------------------------------------------------------
+# 3. Blueprint permissions — every blueprint must declare permissions.allow
+#    with at least one Bash() rule
+# ---------------------------------------------------------------------------
+echo "==> blueprint permissions"
+for blueprint in "$ROOT"/blueprints/*.yml; do
+  bname="$(basename "$blueprint" .yml)"
+  if grep -q '^permissions:' "$blueprint" \
+    && sed -n '/^permissions:/,/^[a-z_]*:/p' "$blueprint" | grep -q -- '- "Bash('; then
+    pass "$bname: permissions.allow"
+  else
+    fail "$bname: permissions.allow missing or empty"
+  fi
+done
+
+# ---------------------------------------------------------------------------
 # Summary
 # ---------------------------------------------------------------------------
 echo ""
