@@ -3,7 +3,6 @@
 ## Active
 
 ## Backlog
-- [ ] Atomic downloads in installer template — mid-transfer curl failure can leave a partial DEST file, which skip-if-exists then treats as installed on the re-run the trap message recommends; fix with `curl -o DEST.tmp && mv DEST.tmp DEST` in both script templates
 - [ ] Add tone and interaction guidelines to CLAUDE.md template — grounding defaults for conciseness, affirmations, unsolicited work, clarification behavior
 - [ ] /report command + pre-compact hook — /report captures actual session findings (what was analyzed, what was found, open questions) to timestamped files in reports/analysis/ or reports/transient/; pre-compact.sh hook fires before context compaction and reminds user to run /report if this was an investigation session; reports/transient/ gitignored, reports/analysis/ committed; both in default kit
 - [ ] Blueprint-specific navigation conventions — Python: __init__.py docstrings as package-level table of contents (reduces repeated file reads across sessions); Java: filesystem IS the map, minimal convention needed; JS/TS: index.js comment block or per-directory README; fold into existing blueprints + ARCHITECTURE.md ## Detail; also informs /continue (read index, not files)
@@ -16,6 +15,7 @@
 - [ ] post-tool-use hook: auto-lint on edit
 
 ## Done
+- [x] Atomic downloads in installer templates — curl to `DEST.tmp` + `mv` on success, tmp removed on failure, `--retry 3` for transient errors; both init and update templates (ADR-10); e2e verified
 - [x] Tool permissions in settings.json — `permissions.allow[]` (universal read-only set) + `ask[]` opt-in tier in all six blueprints; Claude merges into user-owned `.claude/settings.json` (ADR-8); e2e verified incl. merge with pre-existing settings
 - [x] Operating conventions per blueprint — `## Operating Rules` in every CLAUDE template: uv + local `.venv` mandate, 5-step debugging methodology, per-stack instrumentation notes (ADR-9)
 - [x] WSL2 CRLF fix — CRLF strip step in both script templates; `.gitattributes` LF enforcement; README updated; create→run→delete pattern preserved for future Windows symmetry

@@ -59,7 +59,7 @@ Fill in one block per `files[]` entry and one line per `setup[]` entry.
 Collect all unique parent directories (from `dest` paths and `setup[].mkdir` entries)
 and emit them as `mkdir -p` calls at the top.
 
-Use `curl -fsSL "$SOURCE/SRC" -o "DEST"` for remote sources and `cp "$SOURCE/SRC" "DEST"` for local sources.
+Remote downloads must be atomic: fetch to `DEST.tmp`, then `mv` into place only on success, so a mid-transfer failure never leaves a partial file that skip-if-exists would treat as installed. Use `cp "$SOURCE/SRC" "DEST"` for local sources.
 
 **Template:**
 
@@ -82,7 +82,9 @@ _pids=()
   if [ -f "DEST" ]; then
     echo "skipped: DEST"
   else
-    curl -fsSL --max-time 60 "$SOURCE/SRC" -o "DEST"  # remote; or: cp "$SOURCE/SRC" "DEST"  # local
+    # remote (atomic: no partial DEST on failure); or for local sources: cp "$SOURCE/SRC" "DEST"
+    curl -fsSL --retry 3 --max-time 60 "$SOURCE/SRC" -o "DEST.tmp" \
+      && mv "DEST.tmp" "DEST" || { rm -f "DEST.tmp"; exit 1; }
     # if executable: true, add: chmod +x "DEST"
     echo "installed: DEST"
   fi
@@ -178,7 +180,9 @@ mkdir -p "DIR_1"
 _pids=()
 
 (
-  curl -fsSL --max-time 60 "$SOURCE/SRC" -o "DEST"
+  # atomic: no partial DEST on failure
+  curl -fsSL --retry 3 --max-time 60 "$SOURCE/SRC" -o "DEST.tmp" \
+    && mv "DEST.tmp" "DEST" || { rm -f "DEST.tmp"; exit 1; }
   # if executable: true, add: chmod +x "DEST"
   echo "updated: DEST"
 ) & _pids+=($!)

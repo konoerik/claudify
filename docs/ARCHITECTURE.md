@@ -13,6 +13,13 @@
 ## Decisions (ADRs)
 <!-- Append new ADRs with /decide -->
 
+### ADR-10: Atomic downloads with built-in retry in installer templates
+**Date:** 2026-07-16
+**Context:** The templates' `curl -o DEST` writes to the destination in place, so a mid-transfer failure (network drop, `--max-time` expiry) leaves a truncated `DEST`. Init's skip-if-exists then treats that partial file as installed on the very re-run the EXIT-trap message recommends, so the corruption persists silently. In practice Claude usually diagnosed the failure and improvised ad-hoc retries — it worked, but was non-deterministic and not a robust user experience.
+**Decision:** Both script templates fetch to `DEST.tmp` and `mv` into place only on curl success; on failure the tmp file is removed (`|| { rm -f "DEST.tmp"; exit 1; }`), so `DEST` either exists complete or not at all. Also added `--retry 3` so transient network errors are retried deterministically inside the script instead of by Claude after the fact. The local `cp` path stays non-atomic — local copies don't truncate on network failure.
+**Alternatives considered:** Post-download checksum/size validation (requires per-file metadata in blueprints — heavier, and still needs the tmp+mv dance to act on a mismatch); relying on Claude to notice and retry (the status quo being fixed); cleaning partial files in the EXIT trap (the trap can't distinguish a partial `DEST` from a pre-existing complete one).
+**Consequences:** Re-runs after failure are now safe by construction — the trap's "re-run to finish" advice is actually correct. `--max-time 60` bounds the whole operation including retries, so a stalled transfer still can't hang the `wait` loop. `mv` atomicity holds because tmp and dest share a directory. Verified e2e: a 404 alongside a good file leaves the good file installed, no partial and no `.tmp` residue, exit 1, trap message printed.
+
 ### ADR-9: Operating rules per-template in CLAUDE-{type}.md — uv/venv mandate, fixed debugging methodology
 **Date:** 2026-07-16
 **Context:** Blueprints shipped code-style conventions (CONVENTIONS.md) but no rules for *how Claude operates* in a project: which environment to run commands in, and how to debug. In practice Claude would fall back to system Python instead of the project venv, and improvise debugging approaches — sometimes pulling in new dependencies — burning tokens on ad-hoc tooling.
