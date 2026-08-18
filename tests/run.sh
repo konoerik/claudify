@@ -46,7 +46,38 @@ for blueprint in "$ROOT"/blueprints/*.yml; do
 done
 
 # ---------------------------------------------------------------------------
-# 3. Blueprint permissions — every blueprint must declare permissions.allow
+# 3. Add-on integrity — every src: file referenced must exist, and every
+#    manifest must declare a non-empty context: field
+# ---------------------------------------------------------------------------
+echo "==> add-on integrity"
+for addon in "$ROOT"/addons/*.yml; do
+  [ -e "$addon" ] || continue
+  aname="$(basename "$addon" .yml)"
+  while IFS= read -r src; do
+    src="${src#"${src%%[![:space:]]*}"}"
+    if [ -f "$ROOT/$src" ]; then
+      pass "$aname: $src"
+    else
+      fail "$aname: $src — file not found"
+    fi
+  done < <(grep -- '- src:' "$addon" | sed 's/.*- src: *//')
+
+  if grep -qE '^context: *".+"' "$addon"; then
+    pass "$aname: context"
+  else
+    fail "$aname: context missing or empty"
+  fi
+done
+
+if grep -qF '<!-- claudify:addons:start -->' "$ROOT/files/docs/claudify.md" \
+  && grep -qF '<!-- claudify:addons:end -->' "$ROOT/files/docs/claudify.md"; then
+  pass "files/docs/claudify.md: addons marker pair"
+else
+  fail "files/docs/claudify.md: addons marker pair missing"
+fi
+
+# ---------------------------------------------------------------------------
+# 4. Blueprint permissions — every blueprint must declare permissions.allow
 #    with at least one Bash() rule
 # ---------------------------------------------------------------------------
 echo "==> blueprint permissions"

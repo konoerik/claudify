@@ -1,8 +1,8 @@
 # Context
 <!-- Auto-maintained by the stop hook. Edit manually if needed, but keep it short. -->
 
-**Current focus:** Add-ons feature designed and queued — docs-relocation is its prerequisite and goes first
-**Last session:** Shipped atomic installer downloads + `--retry 3` (ADR-10, pushed); designed the add-ons ecosystem (`/claudify add`, marker-section wiring, conditional-only loading contract — full design in the backlog entry); backlogged docs-relocation; decided personal wiki is a standalone project, not a blueprint
+**Current focus:** Nothing active — add-ons effort concluded for now, deliberately pausing for real usage
+**Last session:** Shipped add-ons v1 — `/claudify add`, marker-section wiring, update reassembly, `people` + `transcripts` add-ons, all hand-verified end-to-end (ADR-13)
 **Blocking:** Runner fix (ADR-7) still unverified on Linux/WSL — `bug-report-claudify-exit.md` stays local until then
-**Next action:** Implement docs-relocation (pick the subdir name), then the add-ons v1 (`add` subcommand + people + transcripts)
-<!-- wrapped: 2026-07-16 -->
+**Next action:** Use `people`/`transcripts` in a real project first; then resume the add-ons roster (links, glossary, experiments, runbook, datasets, sources) or pick something else from the backlog
+<!-- wrapped: 2026-08-18 -->

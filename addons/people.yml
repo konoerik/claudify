@@ -1,0 +1,16 @@
+name: People
+description: Stakeholder and contact directory — docs/PEOPLE.md, no command
+
+# Add-on manifest — same schema as blueprints, plus `context`.
+# Applied by `/claudify add people`. No command, no setup — the smallest
+# possible add-on shape: a doc template plus a context-loading rule.
+
+context: "Read `docs/PEOPLE.md` when the user mentions a stakeholder, teammate, or external contact by name — `## Quick Reference` first"
+
+files:
+
+  - src: files/docs/PEOPLE.md
+    dest: docs/PEOPLE.md
+
+next_steps:
+  - Add stakeholders to docs/PEOPLE.md as they come up — no need to front-load it

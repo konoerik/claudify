@@ -25,7 +25,12 @@ Never auto-load:
 
 ## Behavior Rules
 - Prefer editing existing files over creating new ones
+- Maintain a `Makefile` at the project root mirroring the commands in CLAUDE.md `## Development Workflow` (`make test`, `make lint`, `make run`, …) — create it if missing, update it whenever those commands change, so anything run in a session can also be triggered manually
 - Do not create `BACKLOG.md`, `TASKS.md`, `TODO.md`, or similar — use `PLAN.md`
 - When making an architectural decision, record it with `/log` before ending the session
 - Keep `PLAN.md ## Active` short — if it exceeds 10 items, triage before adding more
 - Never commit or push without explicit instruction — `/save` and `/prep` are the checkpoints before that happens
+
+## Add-ons
+<!-- claudify:addons:start -->
+<!-- claudify:addons:end -->

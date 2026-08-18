@@ -1,0 +1,28 @@
+name: Transcripts
+description: Meeting-transcript ingestion — indexed summaries in docs/, raw text cold and gitignored
+
+# Add-on manifest — same schema as blueprints, plus `context`.
+#
+# Applied by `/claudify add transcripts`. The installer template runs
+# files[] and setup[] unchanged (skip-if-exists, same as init).
+# Claude then handles the merge operations itself:
+#   - `context` is injected into the ## Add-ons marker section of .claude/claudify.md
+#   - the add-on name is appended to the `addons:` line of .claude/claudify
+#     (created if absent) — never via writefile, which overwrites
+
+context: "Read `docs/TRANSCRIPTS.md` when the user references a meeting, call, or past discussion — `## Quick Reference` first; never auto-read `transcripts/raw/`"
+
+files:
+
+  - src: files/docs/TRANSCRIPTS.md
+    dest: docs/TRANSCRIPTS.md
+
+  - src: files/commands/ingest.md
+    dest: .claude/commands/ingest.md
+
+setup:
+  - mkdir: transcripts/raw
+  - gitignore: transcripts/raw/
+
+next_steps:
+  - Run /ingest {path} on a transcript file — or paste transcript text straight into /ingest

@@ -11,7 +11,8 @@ The user may pass arguments:
 - `/claudify init` — choose a blueprint and apply it
 - `/claudify init {name}` — apply a named blueprint from GitHub
 - `/claudify init {name} {path}` — apply a named blueprint from a local clone at `{path}`
-- `/claudify update` — re-fetch hooks, commands, and `.claude/claudify.md` for the installed blueprint
+- `/claudify update` — re-fetch hooks, commands, `.claude/claudify.md`, and installed add-ons for the installed blueprint
+- `/claudify add {name}` — install an add-on: a doc template plus optional command, layered on top of any blueprint
 
 If no subcommand is given, show the subcommands above and ask what they want to do.
 
@@ -24,6 +25,14 @@ If no subcommand is given, show the subcommands above and ask what they want to 
 | `python-tui` | Python TUI projects using Textual |
 | `python-only` | Pure Python — stdlib only, no external dependencies |
 | `simple-web` | Single-page HTML/CSS/JS apps, no build step |
+
+### Available add-ons
+| Name | Adds |
+|---|---|
+| `people` | `docs/PEOPLE.md` — stakeholder/contact directory, no command |
+| `transcripts` | `docs/TRANSCRIPTS.md` index + `/ingest` — meeting-transcript summaries, raw text gitignored |
+
+Add-ons are orthogonal to blueprints — install any number, on top of any blueprint.
 
 ---
 
@@ -136,6 +145,46 @@ Finally, print this note:
 
 ---
 
+## Steps: add
+
+### 1. Check prerequisites
+
+Read `.claude/claudify`. If it does not exist, stop and tell the user:
+> `.claude/claudify` not found — this project was not set up with `claudify init`. Run `/claudify init` first.
+
+If no `{name}` argument was given, show the **Available add-ons** table above and ask which to install.
+
+If `{name}` is already listed on the `addons:` line of `.claude/claudify`, tell the user it's already installed and stop — suggest `/claudify update` if they want it refreshed.
+
+### 2. Fetch the add-on manifest
+
+Use the default `SOURCE` from Configuration. Fetch `{SOURCE}/addons/{name}.yml` with `curl -fsSL`.
+
+Parse it. Extract `files[]`, `setup[]`, and `next_steps[]` exactly as in blueprint `init` step 2, plus the new `context` field (a single string).
+
+### 3. Generate and run the installer script
+
+Same template and CRLF-strip wrapper as blueprint `init` step 3 — skip-if-exists, atomic remote downloads. `files[]` and `setup[]` from an add-on manifest run through the identical template; nothing add-on-specific belongs in the script.
+
+### 4. Inject the context rule
+
+Read `.claude/claudify.md`. Find the marker pair:
+```
+<!-- claudify:addons:start -->
+<!-- claudify:addons:end -->
+```
+Insert a new bullet line `- {context}` between the markers, after any bullets already there (preserve existing ones — never remove or reorder).
+
+### 5. Record the add-on
+
+Read `.claude/claudify`. If it has an `addons:` line, append `, {name}` to it. If not, add a new line `addons: {name}`. Rewrite the whole file with Write — this is a targeted append, not the blueprint `setup[].writefile` step (which always overwrites and would destroy the `blueprint:` line or any other installed add-ons).
+
+### 6. Report
+
+Same shape as blueprint `init` step 5: **Installed**/**Skipped** files, then `next_steps[]` as a numbered list, then the restart note.
+
+---
+
 ## Steps: update
 
 ### 1. Read the installed blueprint name
@@ -195,14 +244,27 @@ for _pid in "${_pids[@]}"; do wait "$_pid" || _failed=1; done
 _ok=1
 ```
 
-### 4. Merge permissions
+### 4. Reassemble add-ons
+
+Step 3 just overwrote `.claude/claudify.md` from the blueprint's base copy, which blanks the `## Add-ons` marker section — installed add-ons need re-injecting.
+
+Read `.claude/claudify`. If it has an `addons:` line, for each `{name}` listed:
+- Fetch `{SOURCE}/addons/{name}.yml` with `curl -fsSL` and parse it
+- From its `files[]`, take only entries where `dest` starts with `.claude/commands/` or `.claude/hooks/` (doc files like `docs/TRANSCRIPTS.md` are user-owned — never re-fetched by update, same rule as blueprint docs)
+- Re-fetch those command/hook files the same way as step 3 (always overwrite)
+- Insert `- {context}` between the `<!-- claudify:addons:start -->` / `<!-- claudify:addons:end -->` markers in `.claude/claudify.md`, one bullet per add-on, in the order listed on the `addons:` line
+
+If `.claude/claudify` has no `addons:` line, skip this step — nothing to reassemble.
+
+### 5. Merge permissions
 
 Merge `permissions.allow[]` into `.claude/settings.json` exactly as in init step 4: add missing entries only, create the file or the `allow` key if absent, preserve everything else, never touch `deny`. Do not run the `ask` wizard on update — new optional rules are only offered at init.
 
-### 5. Report
+### 6. Report
 
 Print a clean summary:
 - **Updated:** each file re-fetched
+- **Add-ons reassembled:** each add-on's command/hook files re-fetched and its rule re-injected (if any)
 - **Permissions:** rules added (if any)
 
 Then print this note:
