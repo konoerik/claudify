@@ -31,6 +31,7 @@ Work this sequence — do not improvise tooling:
 3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
 4. **Instrument** — the language's built-in logging/debugger only; remove instrumentation once fixed
 5. **Never add a dependency to debug** — existing tools only
+6. **Verify** — run the project's declared test command yourself and confirm a real passing exit code; a fix isn't done until the real command passes, not your read of the output
 
 ## Behavior Rules
 <!-- Add project-specific rules here. Workflow rules (context loading, commits, plan hygiene) live in .claude/claudify.md. -->

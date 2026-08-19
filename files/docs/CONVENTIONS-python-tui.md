@@ -35,6 +35,35 @@ class CounterWidget(Widget):
         self.post_message(self.Incremented(self.count))
 ```
 
+## Stub (pre-implementation)
+
+> Write this first for new public widgets and pause for review — see `## Behavior Rules` in `.claude/claudify.md`.
+
+```python
+class FilterableList(Widget):
+    """A list widget that filters items as the user types.
+
+    Messages:
+        Selected: Posted when an item is chosen.
+
+    Raises:
+        ValueError: If constructed with an empty items list.
+    """
+
+    def compose(self) -> ComposeResult:
+        raise NotImplementedError
+
+    def filter_items(self, query: str) -> list[str]:
+        raise NotImplementedError
+
+
+# Test scenarios (names only, no bodies yet):
+# test_filterable_list_empty_items_raises
+# test_filter_items_matches_case_insensitive
+# test_filter_items_no_match_returns_empty
+# test_selecting_item_posts_selected_message
+```
+
 ## Screen
 
 ```python

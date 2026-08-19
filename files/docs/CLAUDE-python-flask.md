@@ -46,6 +46,7 @@ Work this sequence — do not improvise tooling:
 3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
 4. **Instrument** — stdlib only: `app.logger`, `breakpoint()`; remove instrumentation once fixed
 5. **Never add a dependency to debug** — no debug toolbars or helper packages; existing tools only
+6. **Verify** — run `uv run pytest` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
 
 ## Behavior Rules
 - Use the app factory pattern — never create the app at module level

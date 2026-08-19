@@ -38,6 +38,34 @@ def load_config(path: Path) -> dict:
         raise ConfigError(f"Invalid JSON in {path}: {exc}") from exc
 ```
 
+## Stub (pre-implementation)
+
+> Write this first for new public functions and pause for review — see `## Behavior Rules` in `.claude/claudify.md`.
+
+```python
+def merge_configs(base: dict, override: dict) -> dict:
+    """Merge two config dicts, with override values taking precedence.
+
+    Args:
+        base: The base configuration.
+        override: Values to layer on top of base.
+
+    Returns:
+        Merged configuration dict.
+
+    Raises:
+        ConfigError: If a key's type differs between base and override.
+    """
+    raise NotImplementedError
+
+
+# Test scenarios (names only, no bodies yet):
+# test_merge_configs_override_wins_on_conflict
+# test_merge_configs_type_mismatch_raises
+# test_merge_configs_empty_override_returns_base
+# test_merge_configs_nested_dict_merges_recursively
+```
+
 ## CLI entry point
 
 ```python

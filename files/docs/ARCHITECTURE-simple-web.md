@@ -15,6 +15,7 @@
 
 
 ## Detail
+<!-- Staged-process transitions can be diagrammed here as a Mermaid stateDiagram-v2 block — offered by /log. -->
 
 ### Page structure
 <!-- Key sections of index.html — what's in the DOM, how it's organised. -->

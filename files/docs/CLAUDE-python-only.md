@@ -43,6 +43,7 @@ Work this sequence — do not improvise tooling:
 3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
 4. **Instrument** — `logging`, `breakpoint()`, `traceback.print_stack()`; remove instrumentation once fixed
 5. **Never add a dependency to debug** — the stdlib-only rule has no debugging exception
+6. **Verify** — run `uv run python -m unittest discover` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
 
 ## Behavior Rules
 - stdlib only — no pip, no requirements.txt with runtime dependencies

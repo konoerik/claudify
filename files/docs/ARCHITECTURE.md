@@ -11,9 +11,11 @@
 
 
 ## Decisions (ADRs)
-<!-- Load on demand. Append new ADRs with /decide.
+<!-- Load on demand. Append new ADRs with /log.
      Format: ### ADR-N: Title / Date / Context / Decision / Consequences -->
 
 
 ## Detail
-<!-- Load on demand. Diagrams, module breakdowns, data models, etc. -->
+<!-- Load on demand. Diagrams, module breakdowns, data models, etc.
+     Staged-process transitions (e.g. stub -> critiqued -> tested -> implemented)
+     can be diagrammed here as a Mermaid stateDiagram-v2 block — offered by /log. -->

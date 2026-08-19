@@ -30,6 +30,30 @@ def create_user():
     return jsonify(user_schema.dump(user)), 201
 ```
 
+## Stub (pre-implementation)
+
+> Write this first for new route handlers and pause for review — see `## Behavior Rules` in `.claude/claudify.md`.
+
+```python
+@users_bp.patch("/<int:user_id>")
+def update_user(user_id: int):
+    """Partially update a user.
+
+    Responses:
+        200: Updated user, on valid partial payload.
+        404: If user_id does not exist.
+        422: If payload fails schema validation (e.g. malformed email).
+    """
+    raise NotImplementedError
+
+
+# Test scenarios (names only, no bodies yet):
+# test_update_user_valid_payload_returns_200
+# test_update_user_missing_user_returns_404
+# test_update_user_invalid_email_returns_422
+# test_update_user_partial_payload_only_changes_given_fields
+```
+
 ## Model
 
 ```python

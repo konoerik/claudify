@@ -12,6 +12,7 @@
 
 
 ## Detail
+<!-- Staged-process transitions can be diagrammed here as a Mermaid stateDiagram-v2 block — offered by /log. -->
 
 ### Structure
 ```

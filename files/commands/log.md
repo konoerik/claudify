@@ -18,3 +18,5 @@ Append to docs/ARCHITECTURE.md ## Decisions using this format:
 **Consequences:** <Trade-offs, follow-up work, or constraints introduced>
 
 Also update docs/CONTEXT.md **Last session** to mention the decision was recorded.
+
+If this decision involves a staged process with meaningful transitions (e.g. stub → critiqued → tested → implemented, or explore → keep/discard), ask whether to diagram it. If yes, append a Mermaid `stateDiagram-v2` block to docs/ARCHITECTURE.md `## Detail` capturing the stages and transitions.

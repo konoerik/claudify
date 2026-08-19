@@ -13,12 +13,9 @@ fi
 
 FILE_PATH=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('tool_input',{}).get('file_path',''))" 2>/dev/null || true)
 BASENAME=$(basename "$FILE_PATH")
+BASENAME_LOWER=$(echo "$BASENAME" | tr '[:upper:]' '[:lower:]')
 
-DISALLOWED=("BACKLOG.md" "TASKS.md" "TODO.md" "TODOS.md" "TASK.md")
-
-for name in "${DISALLOWED[@]}"; do
-  if [[ "$BASENAME" == "$name" ]]; then
-    echo "Blocked: '$BASENAME' is not a canonical filename. Use PLAN.md with ## Active and ## Backlog sections instead." >&2
-    exit 1
-  fi
-done
+if [[ "$BASENAME_LOWER" =~ ^(backlog|tasks?|todos?|notes?)\.md$ ]]; then
+  echo "Blocked: '$BASENAME' is not a canonical filename. Use PLAN.md with ## Active and ## Backlog sections instead." >&2
+  exit 1
+fi

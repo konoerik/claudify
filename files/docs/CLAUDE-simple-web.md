@@ -37,6 +37,7 @@ Work this sequence — do not improvise tooling:
 3. **Isolate** — DevTools breakpoints and the Elements panel; `git diff`/`git log` if it used to work
 4. **Instrument** — sparing `console.log`; remove instrumentation once fixed
 5. **Never add a library to debug** — existing DevTools only
+6. **Verify** — reload the page and manually re-run the exact repro steps from step 1; a fix isn't done until you've watched it work, not inferred it from the diff
 
 ## Behavior Rules
 - No build step — if a library isn't available via CDN, discuss before adding a bundler

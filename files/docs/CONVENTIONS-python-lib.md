@@ -39,6 +39,35 @@ def parse_records(data: list[dict], *, strict: bool = False) -> list[Record]:
     return results
 ```
 
+## Stub (pre-implementation)
+
+> Write this first for new public functions and pause for review — see `## Behavior Rules` in `.claude/claudify.md`.
+
+```python
+def validate_records(data: list[dict], *, strict: bool = False) -> list[Record]:
+    """Validate a list of raw dicts against the Record schema.
+
+    Args:
+        data: Raw records from the source.
+        strict: If True, raise RecordError on the first invalid entry.
+                If False, skip invalid entries silently.
+
+    Returns:
+        List of validated Record objects.
+
+    Raises:
+        RecordError: If strict is True and any entry is invalid.
+    """
+    raise NotImplementedError
+
+
+# Test scenarios (names only, no bodies yet):
+# test_validate_records_all_valid
+# test_validate_records_strict_raises_on_first_invalid
+# test_validate_records_lenient_skips_invalid
+# test_validate_records_empty_input_returns_empty_list
+```
+
 ## Class
 
 ```python

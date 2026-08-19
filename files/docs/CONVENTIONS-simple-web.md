@@ -48,6 +48,28 @@ function handleSelect(id) {
 document.addEventListener("DOMContentLoaded", init);
 ```
 
+## Stub (pre-implementation)
+
+> Write this first for new non-trivial functions and pause for review — see `## Behavior Rules` in `.claude/claudify.md`.
+
+```js
+/**
+ * Look up an item by id and return its display label.
+ *
+ * @param {string} id
+ * @returns {string}
+ * @throws {Error} If no item with that id exists in state.data.
+ */
+function labelForItem(id) {
+  throw new Error("not implemented");
+}
+
+// Scenarios to check manually (no test framework in this blueprint):
+// - existing id returns the item's name
+// - unknown id throws
+// - empty state.data throws
+```
+
 ## CSS conventions
 
 ```css

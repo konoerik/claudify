@@ -11,7 +11,8 @@ The user may pass arguments:
 - `/claudify init` — choose a blueprint and apply it
 - `/claudify init {name}` — apply a named blueprint from GitHub
 - `/claudify init {name} {path}` — apply a named blueprint from a local clone at `{path}`
-- `/claudify update` — re-fetch hooks, commands, `.claude/claudify.md`, and installed add-ons for the installed blueprint
+- `/claudify update` — re-fetch hooks, commands, `.claude/claudify.md`, and installed add-ons for the installed blueprint, from the latest commit on `main`
+- `/claudify update {sha}` — same, but pin to a specific commit instead of latest `main` (rollback, or reproduce an exact prior install)
 - `/claudify add {name}` — install an add-on: a doc template plus optional command, layered on top of any blueprint
 
 If no subcommand is given, show the subcommands above and ask what they want to do.
@@ -114,7 +115,19 @@ echo "wrote: PATH"
 _ok=1
 ```
 
-### 4. Apply permissions
+### 4. Record the installed commit
+
+If `SOURCE` is remote, resolve the commit actually installed:
+```bash
+SHA=$(curl -fsSL https://api.github.com/repos/konoerik/claudify/commits/main | python3 -c "import sys,json; print(json.load(sys.stdin)['sha'])")
+```
+Append it to `.claude/claudify` (the installer script already wrote it with `blueprint: {name}`):
+```bash
+echo "commit: $SHA" >> .claude/claudify
+```
+If `SOURCE` is a local path, skip this step — there's no commit to pin.
+
+### 5. Apply permissions
 
 `.claude/settings.json` is user-owned — **merge into it, never overwrite it**. Do this yourself with Read/Edit/Write (not in the installer script):
 
@@ -130,12 +143,13 @@ _ok=1
 
 Then, if the blueprint has `permissions.ask[]` entries, list each `rule` with its `purpose` and ask the user which to enable (all, some, or none). Merge the accepted ones the same way.
 
-### 5. Report
+### 6. Report
 
 Parse the script output. Print a clean summary:
 - **Installed:** each file written
 - **Skipped:** each file that already existed (no action taken)
 - **Permissions:** rules added to `.claude/settings.json` (and how many were already present)
+- **Commit:** the pinned commit SHA (if resolved)
 
 Then print each item in `next_steps[]` as a numbered list under the heading **Next steps**.
 
@@ -181,7 +195,7 @@ Read `.claude/claudify`. If it has an `addons:` line, append `, {name}` to it. I
 
 ### 6. Report
 
-Same shape as blueprint `init` step 5: **Installed**/**Skipped** files, then `next_steps[]` as a numbered list, then the restart note.
+Same shape as blueprint `init` step 6: **Installed**/**Skipped** files, then `next_steps[]` as a numbered list, then the restart note.
 
 ---
 
@@ -189,14 +203,14 @@ Same shape as blueprint `init` step 5: **Installed**/**Skipped** files, then `ne
 
 ### 1. Read the installed blueprint name
 
-Read `.claude/claudify`. It contains a single line: `blueprint: {name}`.
+Read `.claude/claudify`. It has a `blueprint: {name}` line, and may also have `addons:` and `commit:` lines.
 
 If the file does not exist, stop and tell the user:
 > `.claude/claudify` not found — this project was not set up with `claudify init`. Run `/claudify init` first.
 
 ### 2. Resolve source and fetch the blueprint
 
-Use the default `SOURCE` from Configuration (update always pulls from GitHub, not a local path).
+If a `{sha}` argument was given to `/claudify update`, set `SOURCE` to `https://raw.githubusercontent.com/konoerik/claudify/{sha}` — this pins the update to that commit (rollback, or reproducing a prior install). Otherwise use the default `SOURCE` from Configuration, which tracks latest `main` (update always pulls from GitHub, not a local path).
 
 Fetch `{SOURCE}/blueprints/{name}.yml` with `curl -fsSL`.
 
@@ -256,16 +270,25 @@ Read `.claude/claudify`. If it has an `addons:` line, for each `{name}` listed:
 
 If `.claude/claudify` has no `addons:` line, skip this step — nothing to reassemble.
 
-### 5. Merge permissions
+### 5. Record the installed commit
 
-Merge `permissions.allow[]` into `.claude/settings.json` exactly as in init step 4: add missing entries only, create the file or the `allow` key if absent, preserve everything else, never touch `deny`. Do not run the `ask` wizard on update — new optional rules are only offered at init.
+If a `{sha}` argument was given, that is the resolved commit. Otherwise resolve the commit actually pulled from `main`:
+```bash
+SHA=$(curl -fsSL https://api.github.com/repos/konoerik/claudify/commits/main | python3 -c "import sys,json; print(json.load(sys.stdin)['sha'])")
+```
+Read `.claude/claudify`, replace its `commit:` line with `commit: {sha}` (add the line if it doesn't have one yet), preserving the `blueprint:` and any `addons:` lines. Rewrite the whole file with Write.
 
-### 6. Report
+### 6. Merge permissions
+
+Merge `permissions.allow[]` into `.claude/settings.json` exactly as in init step 5: add missing entries only, create the file or the `allow` key if absent, preserve everything else, never touch `deny`. Do not run the `ask` wizard on update — new optional rules are only offered at init.
+
+### 7. Report
 
 Print a clean summary:
 - **Updated:** each file re-fetched
 - **Add-ons reassembled:** each add-on's command/hook files re-fetched and its rule re-injected (if any)
 - **Permissions:** rules added (if any)
+- **Commit:** the pinned commit SHA
 
 Then print this note:
 

@@ -1,8 +1,8 @@
-Wrap up this session by updating CONTEXT.md and PLAN.md.
+Wrap up this session by updating docs/CONTEXT.md and docs/PLAN.md.
 
-1. Read CONTEXT.md and PLAN.md ## Active (if not already in context).
+1. Read docs/CONTEXT.md and docs/PLAN.md ## Active (if not already in context).
 
-2. Based on what we did this session, rewrite CONTEXT.md with:
+2. Based on what we did this session, rewrite docs/CONTEXT.md with:
    - **Current focus:** what is still actively in progress (not done yet)
    - **Last session:** one concise sentence — what was accomplished and any decisions made
    - **Blocking:** anything unresolved, waiting on input, or unclear
@@ -12,9 +12,9 @@ Wrap up this session by updating CONTEXT.md and PLAN.md.
    `<!-- wrapped: YYYY-MM-DD -->`
    (use today's actual date)
 
-3. Review PLAN.md ## Active. For any tasks completed this session, move them to ## Done.
+3. Review docs/PLAN.md ## Active. For any tasks completed this session, move them to ## Done.
    Do not add new tasks unless I explicitly ask.
 
 4. Confirm what was updated. Do not summarize the whole session — just state:
-   - What changed in CONTEXT.md
+   - What changed in docs/CONTEXT.md
    - How many tasks moved to Done (if any)

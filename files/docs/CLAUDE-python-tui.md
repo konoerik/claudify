@@ -49,6 +49,7 @@ Work this sequence — do not improvise tooling:
 3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
 4. **Instrument** — the app owns stdout, so no `print()`/`breakpoint()` in a running TUI: use `self.log()` and watch it in `textual console`; remove instrumentation once fixed
 5. **Never add a dependency to debug** — existing tools only
+6. **Verify** — run `uv run pytest` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
 
 ## Behavior Rules
 - Prefer composing existing Textual built-ins over custom implementations

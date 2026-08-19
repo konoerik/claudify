@@ -5,7 +5,7 @@ Work through each item and report pass/fail/skip with a brief reason:
 **Code**
 - [ ] All tests pass
 - [ ] No leftover debug logs, commented-out code, or TODOs in changed files
-- [ ] No hardcoded secrets or environment-specific values
+- [ ] No hardcoded secrets or environment-specific values — scan for credential patterns (API keys, AWS keys, private-key blocks, bearer tokens, passwords in connection strings) across the full set of pending changes: `git diff` (or `git diff --staged`) for tracked edits, plus the actual contents of every untracked file from `git status --porcelain` (`git diff` alone never shows new-file content). Report any matches with file/line, not just a visual skim
 
 **Docs**
 - [ ] docs/PLAN.md ## Active updated — completed items moved to ## Done
