@@ -16,7 +16,7 @@ claudify is deliberately user-first. The commands (`/continue`, `/save`, `/pulse
 
 ---
 
-## Setup (once)
+## Setup
 
 Install the `/claudify` command globally so it's available in every project:
 
@@ -26,7 +26,7 @@ mkdir -p ~/.claude/commands && \
   -o ~/.claude/commands/claudify.md
 ```
 
-That's it — you never touch claudify again.
+Re-run this command anytime to pick up changes to `/claudify` itself — `init` and `update` only refresh files inside your projects, never this command.
 
 ---
 
