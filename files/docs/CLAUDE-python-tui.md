@@ -42,6 +42,11 @@ uv run pytest tests/test_app.py -v
 - Every command goes through the venv: `uv run pytest`, `uv run textual ...`
 - Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
 
+### Verification
+- Delegate a `textual run --dev` interaction or snapshot check to a forked subagent when its output is large and disposable — only the verdict returns to the main thread
+- Keep verification in the main thread when it needs judgment tied to ongoing context the fork won't have — matching intended layout, comparing against a prior iteration
+- Never delegate the Debugging sequence's Verify step below — that confirmation runs in the thread that made the fix
+
 ### Debugging
 Work this sequence — do not improvise tooling:
 1. **Reproduce** — smallest command that shows the failure (one test, or one interaction in `textual run --dev`)

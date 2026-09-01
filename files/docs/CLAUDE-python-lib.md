@@ -38,6 +38,11 @@ uv run mypy src/
 - Every command goes through the venv: `uv run pytest`, `uv run mypy ...`
 - Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
 
+### Verification
+- Delegate a verbose test run or coverage report to a forked subagent when the output is long and disposable — only the pass/fail summary and any failure detail returns to the main thread
+- Keep verification in the main thread when a failure needs judgment tied to ongoing context, not just pass/fail
+- Never delegate the Debugging sequence's Verify step below — that confirmation runs in the thread that made the fix
+
 ### Debugging
 Work this sequence — do not improvise tooling:
 1. **Reproduce** — write the failing test first; it becomes the regression test

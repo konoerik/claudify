@@ -1,0 +1,23 @@
+name: Recall
+description: /recall {topic} — check whether a topic was already investigated in a past session before redoing the work
+
+# Add-on manifest — same schema as blueprints, plus `context`.
+# Applied by `/claudify add recall`. Index is local, per-machine state
+# (built from ~/.claude/projects/, which isn't shared or committed) —
+# gitignored, never a doc meant for teammates to read.
+
+context: "Run /recall {topic} before starting a fresh investigation into an area of the codebase that may have already been explored in a prior session"
+
+files:
+
+  - src: files/scripts/session_index.py
+    dest: .claude/scripts/session_index.py
+
+  - src: files/commands/recall.md
+    dest: .claude/commands/recall.md
+
+setup:
+  - gitignore: .claude/session-index.json
+
+next_steps:
+  - Run /recall {topic} the next time you're about to re-investigate something that feels familiar

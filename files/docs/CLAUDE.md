@@ -24,6 +24,11 @@
 - Use the project's declared toolchain and package manager — never system-level or globally installed tools
 - A dependency change must land in the project's manifest (lockfile included); never install ad hoc
 
+### Verification
+- Delegate a verification check to a forked subagent when its output is large and disposable (long test output, a build log, a rendered artifact) — only the verdict returns to the main thread
+- Keep verification in the main thread when the result needs judgment tied to ongoing context, not just pass/fail
+- Never delegate the Debugging sequence's Verify step below — that confirmation runs in the thread that made the fix
+
 ### Debugging
 Work this sequence — do not improvise tooling:
 1. **Reproduce** — smallest command that shows the failure before changing anything
