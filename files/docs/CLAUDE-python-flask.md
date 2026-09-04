@@ -39,11 +39,6 @@ uv run ruff check .
 - Every command goes through the venv: `uv run pytest`, `uv run flask ...`
 - Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
 
-### Verification
-- Delegate a Playwright/browser check to a forked subagent when its output is large and disposable (a screenshot, a full DOM dump) — only the verdict ("renders correctly" / "500 on submit, see console error X") returns to the main thread
-- Keep verification in the main thread when it needs judgment tied to ongoing context the fork won't have — matching stakeholder intent, comparing against a prior iteration
-- Never delegate the Debugging sequence's Verify step below — that confirmation runs in the thread that made the fix
-
 ### Debugging
 Work this sequence — do not improvise tooling:
 1. **Reproduce** — smallest command that shows the failure (one test, one `curl` request) before changing anything

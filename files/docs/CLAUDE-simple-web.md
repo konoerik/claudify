@@ -30,11 +30,6 @@ python3 -m http.server
 - New libraries arrive only as version-pinned CDN `<script>` tags, and only after discussion
 - Serve locally with `python3 -m http.server` when the page needs local files or ES modules
 
-### Verification
-- Delegate a DevTools/browser check to a forked subagent when its output is large and disposable (a screenshot, a full page dump) — only the verdict returns to the main thread
-- Keep verification in the main thread when it needs judgment tied to ongoing context the fork won't have — matching stakeholder intent, comparing against a prior iteration
-- Never delegate the Debugging sequence's Verify step below — that confirmation runs in the thread that made the fix
-
 ### Debugging
 Work this sequence — do not improvise tooling:
 1. **Reproduce** — exact steps in the browser that show the failure, starting from a hard reload

@@ -36,11 +36,6 @@ uv run python -m unittest tests.test_module -v
 - Every command goes through it: `uv run python ...`
 - No packages, period — `uv add` / `pip install` are never valid moves; if a problem seems to need one, discuss first
 
-### Verification
-- Delegate a verbose script or CLI run to a forked subagent when the output is long and disposable — only the relevant result or error returns to the main thread
-- Keep verification in the main thread when the result needs judgment tied to ongoing context, not just pass/fail
-- Never delegate the Debugging sequence's Verify step below — that confirmation runs in the thread that made the fix
-
 ### Debugging
 Work this sequence — do not improvise tooling:
 1. **Reproduce** — smallest command that shows the failure (one unittest case, one CLI invocation)

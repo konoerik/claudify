@@ -190,25 +190,37 @@ def build(sessions_dir):
     print(f"Indexed {scanned} session(s), {skipped} unchanged, {len(updated)} total -> {INDEX_PATH}")
 
 
+def query_words(term):
+    """Words of length >= 3, so short connectors (in, to, of) don't dilute
+    scoring — no stopword list to maintain, just a length floor."""
+    return [w for w in term.lower().split() if len(w) >= 3]
+
+
 def query(term):
     if not INDEX_PATH.exists():
         print("No index yet — run `build` first.", file=sys.stderr)
         sys.exit(1)
     data = json.loads(INDEX_PATH.read_text())
-    term_lower = term.lower()
+    words = query_words(term)
+    if not words:
+        print(f"Query '{term}' has no words of length >= 3 to match on.")
+        return
+
     matches = []
     for session_id, entry in data.get("sessions", {}).items():
         for node in entry.get("nodes", []):
             haystack = f"{node.get('asked','')} {node.get('found','')} {entry.get('title') or ''}".lower()
-            if term_lower in haystack:
-                matches.append((entry.get("started") or "", session_id, entry.get("title"), node))
+            score = sum(1 for w in words if w in haystack)
+            if score > 0:
+                matches.append((score, entry.get("started") or "", session_id, entry.get("title"), node))
 
-    matches.sort(key=lambda m: m[0], reverse=True)
     if not matches:
         print(f"No matches for '{term}'.")
         return
-    for started, session_id, title, node in matches:
-        print(f"\n[{started}] session {session_id[:8]} — {title or '(untitled)'}")
+
+    matches.sort(key=lambda m: (m[0], m[1]), reverse=True)
+    for score, started, session_id, title, node in matches:
+        print(f"\n[{started}] session {session_id[:8]} — {title or '(untitled)'}  (matched {score}/{len(words)} words)")
         print(f"  asked: {node['asked']}")
         print(f"  found: {node['found']}")
 
