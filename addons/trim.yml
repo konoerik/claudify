@@ -1,0 +1,20 @@
+name: Trim
+description: /trim — free context in the current session without a full /clear, by finding stale tool output worth dropping or summarizing
+
+# Add-on manifest — same schema as blueprints, plus `context`.
+# Applied by `/claudify add trim`. No doc, no setup — just a script and a
+# command. Stateless: trim_scan.py reads the live session transcript and
+# prints candidates, it never writes anything.
+
+context: "Suggest /trim when the live session has accumulated large stale tool output (screenshots already reviewed, long logs already summarized) and the user wants to keep working without a full /clear"
+
+files:
+
+  - src: files/scripts/trim_scan.py
+    dest: .claude/scripts/trim_scan.py
+
+  - src: files/commands/trim.md
+    dest: .claude/commands/trim.md
+
+next_steps:
+  - Run /trim in a session that's grown heavy with tool output to see it in action

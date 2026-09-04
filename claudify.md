@@ -32,6 +32,8 @@ If no subcommand is given, show the subcommands above and ask what they want to 
 |---|---|
 | `people` | `docs/PEOPLE.md` — stakeholder/contact directory, no command |
 | `transcripts` | `docs/TRANSCRIPTS.md` index + `/ingest` — meeting-transcript summaries, raw text gitignored |
+| `trim` | `/trim` — free context in the current session by finding stale tool output to drop or summarize, without a full `/clear` |
+| `recall` | `/recall {topic}` — check whether a topic was already investigated in a past session before redoing the work |
 
 Add-ons are orthogonal to blueprints — install any number, on top of any blueprint.
 
