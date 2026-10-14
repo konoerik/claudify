@@ -11,7 +11,7 @@ Bash, Markdown, YAML. No build step, no dependencies.
 - `blueprints/` contains YAML manifests declaring what each blueprint installs
 - `files/` contains the source files blueprints reference — docs, hooks, commands
 - Blueprint-specific doc variants are named `CLAUDE-{type}.md`, `ARCHITECTURE-{type}.md`
-- `files/docs/claudify.md` is the kit-owned rules file; installed to `.claude/claudify.md` in target projects — always overwritten by `update`
+- `files/docs/claudify.md` is the kit-owned rules file; installed to `.claude/claudify.md` in target projects — overwritten by `update` unless it was edited locally (update compares kit-managed files against the recorded `commit:` and asks first)
 - `.claude/claudify` (in target projects) stores the blueprint name for use by `update`
 - All hook scripts must handle missing files gracefully (no hard exits)
 

@@ -60,7 +60,9 @@ To pull the latest hooks, commands, and kit rules into an existing project:
 /claudify update
 ```
 
-`update` re-fetches only the kit-managed files (hooks, commands, `.claude/claudify.md`). Your project docs (`CLAUDE.md`, `CONTEXT.md`, etc.) are never touched.
+`update` re-fetches only the kit-managed files (hooks, commands, add-on scripts, `.claude/claudify.md`). Your project docs (`CLAUDE.md`, `CONTEXT.md`, etc.) are never touched. If a kit-managed file was edited locally since it was installed, `update` shows the diff and asks before overwriting it. Project-specific rules belong in `CLAUDE.md`, which is never overwritten.
+
+To update several projects unattended, use `/claudify update --batch`: it never asks, keeps locally edited files, and lists them in its report.
 
 ### Available blueprints
 

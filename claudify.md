@@ -11,8 +11,9 @@ The user may pass arguments:
 - `/claudify init` — choose a blueprint and apply it
 - `/claudify init {name}` — apply a named blueprint from GitHub
 - `/claudify init {name} {path}` — apply a named blueprint from a local clone at `{path}`
-- `/claudify update` — re-fetch hooks, commands, `.claude/claudify.md`, and installed add-ons for the installed blueprint, from the latest commit on `main`
+- `/claudify update` — re-fetch hooks, commands, scripts, `.claude/claudify.md`, and installed add-ons for the installed blueprint, from the latest commit on `main`; asks before overwriting any file that was edited locally
 - `/claudify update {sha}` — same, but pin to a specific commit instead of latest `main` (rollback, or reproduce an exact prior install)
+- `/claudify update --batch` (combinable with `{sha}`) — for unattended runs across many projects: never asks; locally edited files are kept and listed in the report
 - `/claudify add {name}` — install an add-on: a doc template plus optional command, layered on top of any blueprint
 
 If no subcommand is given, show the subcommands above and ask what they want to do.
@@ -203,30 +204,73 @@ Same shape as blueprint `init` step 6: **Installed**/**Skipped** files, then `ne
 
 ## Steps: update
 
-### 1. Read the installed blueprint name
+### 1. Read the install record
 
 Read `.claude/claudify`. It has a `blueprint: {name}` line, and may also have `addons:` and `commit:` lines.
 
 If the file does not exist, stop and tell the user:
 > `.claude/claudify` not found — this project was not set up with `claudify init`. Run `/claudify init` first.
 
-### 2. Resolve source and fetch the blueprint
+### 2. Resolve source and fetch the manifests
 
 If a `{sha}` argument was given to `/claudify update`, set `SOURCE` to `https://raw.githubusercontent.com/konoerik/claudify/{sha}` — this pins the update to that commit (rollback, or reproducing a prior install). Otherwise use the default `SOURCE` from Configuration, which tracks latest `main` (update always pulls from GitHub, not a local path).
 
-Fetch `{SOURCE}/blueprints/{name}.yml` with `curl -fsSL`.
+Fetch `{SOURCE}/blueprints/{name}.yml` with `curl -fsSL`. Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks/`, `.claude/commands/`, or `.claude/scripts/`, or `dest` is `.claude/claudify.md`. Also extract `permissions.allow[]`.
 
-Parse it. Extract only `files[]` entries where `dest` starts with `.claude/hooks/`, `.claude/commands/`, or `dest` is `.claude/claudify.md`. Also extract `permissions.allow[]`.
+If `.claude/claudify` has an `addons:` line, fetch `{SOURCE}/addons/{name}.yml` for each add-on listed and parse it. From its `files[]`, take the entries whose `dest` starts with `.claude/commands/`, `.claude/hooks/`, or `.claude/scripts/`, and keep its `context` string for step 5. Add-on doc files such as `docs/TRANSCRIPTS.md` are user-owned and never re-fetched, the same rule as blueprint docs.
 
-### 3. Generate and run the update script
+The blueprint entries plus the add-on entries are the **update set**.
 
-Write a script to `.claudify-update.sh`. Then strip any CRLF line endings (required on WSL2), run it, and delete it:
+### 3. Check for local edits
+
+A kit-managed file can be edited locally: by hand, or by Claude adding a rule to `.claude/claudify.md` mid-session. Overwriting it would silently lose that edit, so compare each file in the update set against the copy that was originally installed.
+
+If `.claude/claudify` has no `commit:` line, there is no baseline to compare against. Skip this step and say so in the report.
+
+Otherwise write a script to `.claudify-check.sh`, with `COMMIT` set to the recorded `commit:` value (not the `{sha}` argument) and one `check` line per update-set entry. Run it with the same CRLF-strip wrapper as step 4, and delete it afterwards:
+
+```bash
+#!/usr/bin/env bash
+set -uo pipefail
+BASE="https://raw.githubusercontent.com/konoerik/claudify/COMMIT"
+_tmp=$(mktemp -d)
+trap 'rm -rf "$_tmp"' EXIT
+
+# add-on bullets between the markers are written by update itself, so they never count as an edit
+_strip() { awk '/claudify:addons:start/{print; skip=1; next} /claudify:addons:end/{skip=0} !skip' "$1"; }
+
+check() {  # check SRC DEST
+  [ -f "$2" ] || return 0
+  if ! curl -fsSL --retry 3 --max-time 60 "$BASE/$1" -o "$_tmp/base" 2>/dev/null; then
+    echo "edited: $2 (no installed copy to compare against)"
+    return 0
+  fi
+  if ! cmp -s <(_strip "$_tmp/base") <(_strip "$2"); then
+    echo "edited: $2"
+    diff -u --label "installed" --label "local" <(_strip "$_tmp/base") <(_strip "$2")
+  fi
+}
+
+check "SRC" "DEST"
+```
+
+A file with no installed copy to compare against counts as edited: usually a project's own file that shares a name with a newer kit file, otherwise a failed fetch. Either way, asking is the safe default.
+
+For each edited file:
+- **Default:** show the user the diff and ask whether to **overwrite** it (the local edit is lost; suggest moving it into `CLAUDE.md`, which update never touches) or **keep** it (skipped this run; it stays at its current content).
+- **`--batch`:** keep it without asking.
+
+Kept files are removed from the update set.
+
+### 4. Generate and run the update script
+
+Write a script to `.claudify-update.sh` covering the update set, one block per entry. Then strip any CRLF line endings (required on WSL2), run it, and delete it:
 
 ```bash
 tr -d '\r' < .claudify-update.sh > .claudify-update.tmp && mv .claudify-update.tmp .claudify-update.sh; bash .claudify-update.sh; rm -f .claudify-update.sh
 ```
 
-Unlike init, update **always overwrites** — no skip logic.
+Unlike init, update overwrites everything in the update set. There is no skip-if-exists logic; step 3 already decided what to keep.
 
 **Template:**
 
@@ -260,19 +304,13 @@ for _pid in "${_pids[@]}"; do wait "$_pid" || _failed=1; done
 _ok=1
 ```
 
-### 4. Reassemble add-ons
+### 5. Reassemble add-on rules
 
-Step 3 just overwrote `.claude/claudify.md` from the blueprint's base copy, which blanks the `## Add-ons` marker section — installed add-ons need re-injecting.
+If step 4 overwrote `.claude/claudify.md`, its `## Add-ons` marker section is now blank. Insert `- {context}` between the `<!-- claudify:addons:start -->` / `<!-- claudify:addons:end -->` markers, one bullet per add-on, in the order listed on the `addons:` line.
 
-Read `.claude/claudify`. If it has an `addons:` line, for each `{name}` listed:
-- Fetch `{SOURCE}/addons/{name}.yml` with `curl -fsSL` and parse it
-- From its `files[]`, take only entries where `dest` starts with `.claude/commands/` or `.claude/hooks/` (doc files like `docs/TRANSCRIPTS.md` are user-owned — never re-fetched by update, same rule as blueprint docs)
-- Re-fetch those command/hook files the same way as step 3 (always overwrite)
-- Insert `- {context}` between the `<!-- claudify:addons:start -->` / `<!-- claudify:addons:end -->` markers in `.claude/claudify.md`, one bullet per add-on, in the order listed on the `addons:` line
+Skip this step if there is no `addons:` line, or if `.claude/claudify.md` was kept in step 3 (its bullets are still in place).
 
-If `.claude/claudify` has no `addons:` line, skip this step — nothing to reassemble.
-
-### 5. Record the installed commit
+### 6. Record the installed commit
 
 If a `{sha}` argument was given, that is the resolved commit. Otherwise resolve the commit actually pulled from `main`:
 ```bash
@@ -280,17 +318,19 @@ SHA=$(curl -fsSL https://api.github.com/repos/konoerik/claudify/commits/main | p
 ```
 Read `.claude/claudify`, replace its `commit:` line with `commit: {sha}` (add the line if it doesn't have one yet), preserving the `blueprint:` and any `addons:` lines. Rewrite the whole file with Write.
 
-### 6. Merge permissions
+### 7. Merge permissions
 
 Merge `permissions.allow[]` into `.claude/settings.json` exactly as in init step 5: add missing entries only, create the file or the `allow` key if absent, preserve everything else, never touch `deny`. Do not run the `ask` wizard on update — new optional rules are only offered at init.
 
-### 7. Report
+### 8. Report
 
 Print a clean summary:
 - **Updated:** each file re-fetched
-- **Add-ons reassembled:** each add-on's command/hook files re-fetched and its rule re-injected (if any)
+- **Kept (edited locally):** each file step 3 kept, with a one-line note of what the local edit is. Omit if none
+- **Add-on rules:** re-injected (if any)
 - **Permissions:** rules added (if any)
 - **Commit:** the pinned commit SHA
+- If step 3 was skipped for lack of a `commit:` line, say that local edits were not checked this time; the next update will check them
 
 Then print this note:
 
