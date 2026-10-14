@@ -25,13 +25,7 @@
 - A dependency change must land in the project's manifest (lockfile included); never install ad hoc
 
 ### Debugging
-Work this sequence — do not improvise tooling:
-1. **Reproduce** — smallest command that shows the failure before changing anything
-2. **Read the full error output** — before forming a hypothesis
-3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
-4. **Instrument** — the language's built-in logging/debugger only; remove instrumentation once fixed
-5. **Never add a dependency to debug** — existing tools only
-6. **Verify** — run the project's declared test command yourself and confirm a real passing exit code; a fix isn't done until the real command passes, not your read of the output
+Reproduce the failure with the smallest command that shows it and read the full error output before changing anything. Debug with what the project already has — the language's built-in logging or debugger, existing tests, `git diff`/`git log`, and bisect when the regression point is unknown — and never add a dependency to debug. Remove instrumentation once fixed. A fix is done when you have run the project's declared test command yourself and it exits 0, not when the output looks right.
 
 ## Behavior Rules
 <!-- Add project-specific rules here. Workflow rules (context loading, commits, plan hygiene) live in .claude/claudify.md. -->

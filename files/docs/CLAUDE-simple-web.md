@@ -31,13 +31,7 @@ python3 -m http.server
 - Serve locally with `python3 -m http.server` when the page needs local files or ES modules
 
 ### Debugging
-Work this sequence — do not improvise tooling:
-1. **Reproduce** — exact steps in the browser that show the failure, starting from a hard reload
-2. **Read the console first** — errors and failed requests (Network tab) before forming a hypothesis
-3. **Isolate** — DevTools breakpoints and the Elements panel; `git diff`/`git log` if it used to work
-4. **Instrument** — sparing `console.log`; remove instrumentation once fixed
-5. **Never add a library to debug** — existing DevTools only
-6. **Verify** — reload the page and manually re-run the exact repro steps from step 1; a fix isn't done until you've watched it work, not inferred it from the diff
+Reproduce the failure with exact steps in the browser, starting from a hard reload, and read the console and any failed requests in the Network tab before forming a hypothesis. Debug with DevTools — breakpoints, the Elements panel, sparing `console.log` — and `git diff`/`git log` if it used to work; never add a library to debug. Remove instrumentation once fixed. A fix is done when you have reloaded the page and watched the original repro steps succeed, not when the diff looks right.
 
 ## Behavior Rules
 - No build step — if a library isn't available via CDN, discuss before adding a bundler

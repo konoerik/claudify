@@ -37,13 +37,7 @@ uv run python -m unittest tests.test_module -v
 - No packages, period — `uv add` / `pip install` are never valid moves; if a problem seems to need one, discuss first
 
 ### Debugging
-Work this sequence — do not improvise tooling:
-1. **Reproduce** — smallest command that shows the failure (one unittest case, one CLI invocation)
-2. **Read the full traceback** — before forming a hypothesis
-3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
-4. **Instrument** — `logging`, `breakpoint()`, `traceback.print_stack()`; remove instrumentation once fixed
-5. **Never add a dependency to debug** — the stdlib-only rule has no debugging exception
-6. **Verify** — run `uv run python -m unittest discover` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
+Reproduce the failure with the smallest command that shows it (one unittest case, one CLI invocation) and read the full traceback before changing anything. Debug with `logging`, `breakpoint()`, `traceback.print_stack()`, existing tests, `git diff`/`git log`, and bisect when the regression point is unknown; the stdlib-only rule has no debugging exception. Remove instrumentation once fixed. A fix is done when you have run `uv run python -m unittest discover` yourself and it exits 0, not when the output looks right.
 
 ## Behavior Rules
 - stdlib only — no pip, no requirements.txt with runtime dependencies

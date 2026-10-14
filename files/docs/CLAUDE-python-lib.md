@@ -39,13 +39,7 @@ uv run mypy src/
 - Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
 
 ### Debugging
-Work this sequence — do not improvise tooling:
-1. **Reproduce** — write the failing test first; it becomes the regression test
-2. **Read the full traceback** — before forming a hypothesis
-3. **Isolate** — narrow with the existing suite and `git diff`/`git log`; bisect if the regression point is unknown
-4. **Instrument** — stdlib only: `logging`, `breakpoint()`; remove instrumentation once fixed
-5. **Never add a dependency to debug** — existing tools only
-6. **Verify** — run `uv run pytest` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
+Start by writing a failing test that reproduces the bug — it becomes the regression test — and read the full traceback before forming a hypothesis. Debug with stdlib tools (`logging`, `breakpoint()`), the existing suite, `git diff`/`git log`, and bisect when the regression point is unknown; never add a dependency to debug. Remove instrumentation once fixed. A fix is done when you have run `uv run pytest` yourself and it exits 0, not when the output looks right.
 
 ## Behavior Rules
 - Never add a runtime dependency without discussion — keep the dependency footprint small

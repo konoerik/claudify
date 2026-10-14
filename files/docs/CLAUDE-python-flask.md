@@ -40,13 +40,7 @@ uv run ruff check .
 - Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
 
 ### Debugging
-Work this sequence — do not improvise tooling:
-1. **Reproduce** — smallest command that shows the failure (one test, one `curl` request) before changing anything
-2. **Read the full traceback** — before forming a hypothesis
-3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
-4. **Instrument** — stdlib only: `app.logger`, `breakpoint()`; remove instrumentation once fixed
-5. **Never add a dependency to debug** — no debug toolbars or helper packages; existing tools only
-6. **Verify** — run `uv run pytest` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
+Reproduce the failure with the smallest command that shows it (one test, one `curl` request) and read the full traceback before changing anything. Debug with stdlib tools (`app.logger`, `breakpoint()`), existing tests, `git diff`/`git log`, and bisect when the regression point is unknown; never add a dependency to debug — no debug toolbars or helper packages. Remove instrumentation once fixed. A fix is done when you have run `uv run pytest` yourself and it exits 0, not when the output looks right.
 
 ## Behavior Rules
 - Use the app factory pattern — never create the app at module level

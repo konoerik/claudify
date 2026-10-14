@@ -43,13 +43,7 @@ uv run pytest tests/test_app.py -v
 - Dependencies change only via `uv add` / `uv remove` — `pyproject.toml` is the single source of truth; never bare `pip install`
 
 ### Debugging
-Work this sequence — do not improvise tooling:
-1. **Reproduce** — smallest command that shows the failure (one test, or one interaction in `textual run --dev`)
-2. **Read the full traceback** — before forming a hypothesis
-3. **Isolate** — narrow with existing tests and `git diff`/`git log`; bisect if the regression point is unknown
-4. **Instrument** — the app owns stdout, so no `print()`/`breakpoint()` in a running TUI: use `self.log()` and watch it in `textual console`; remove instrumentation once fixed
-5. **Never add a dependency to debug** — existing tools only
-6. **Verify** — run `uv run pytest` yourself and confirm a zero exit code; a fix isn't done until the real command passes, not your read of the output
+Reproduce the failure with the smallest command that shows it (one test, or one interaction in `textual run --dev`) and read the full traceback before changing anything. The app owns stdout, so don't use `print()` or `breakpoint()` in a running TUI — log with `self.log()` and watch it in `textual console`. Beyond that, use existing tests, `git diff`/`git log`, and bisect when the regression point is unknown; never add a dependency to debug. Remove instrumentation once fixed. A fix is done when you have run `uv run pytest` yourself and it exits 0, not when the output looks right.
 
 ## Behavior Rules
 - Prefer composing existing Textual built-ins over custom implementations
